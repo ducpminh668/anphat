@@ -4,6 +4,7 @@
         { "src": "/api/index.php", "use": "vercel-php@0.4.0" },
         { "src": "/public/**", "use": "@vercel/static" }
     ],
+    "regions": ["sfo"],
     "routes": [
         {
             "src": "/(css|js|images)/(.*)",
