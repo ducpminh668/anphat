@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\Product\ProductRepository;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -41,6 +42,38 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'manufacturer' => 'required',
+            'batch_code' => 'required',
+            'barcode' => 'required',
+            'quantity' => 'required',
+            'cost_price' => 'required',
+            'sell_price' => 'required',
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'product_images.*.image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        if ($validator->fails()) {
+            return ['status' => 0, 'message' => $validator->errors()];
+        }
+
+        if ($request->file('thumbnail')) {
+            $imagePath = $request->file('thumbnail');
+            $imageName = $imagePath->getClientOriginalName();
+            $path = $request->file('thumbnail')->storeAs('uploads', $imageName, 'public');
+        }
+
+        $this->product->create([
+            'name' => $request->name,
+            'manufacturer' => $request->manufacturer,
+            'batch_code' => $request->batch_code,
+            'barcode' => $request->barcode,
+            'quantity' => $request->quantity,
+            'cost_price' => $request->cost_price,
+            'sell_price' => $request->sell_price,
+            'thumbnail' => '/storage/' . $path,
+        ]);
     }
 
     /**
