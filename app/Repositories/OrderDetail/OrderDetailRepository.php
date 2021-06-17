@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repositories\Product;
+namespace App\Repositories\OrderDetail;
 
 use App\Repositories\EloquentRepository;
 
-class ProductRepository extends EloquentRepository
+class OrderDetailRepository extends EloquentRepository
 {
 
     /**
@@ -13,6 +13,6 @@ class ProductRepository extends EloquentRepository
      */
     public function getModel()
     {
-        return \App\Models\Product::class;
+        return \App\Models\OrderDetail::class;
     }
 }

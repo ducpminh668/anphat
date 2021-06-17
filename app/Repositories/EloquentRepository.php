@@ -46,6 +46,18 @@ abstract class EloquentRepository
     }
 
     /**
+     * Get All
+     * @return \Illuminate\Database\Eloquent\Collection|static[]
+     */
+    public function paginate($eagerAttributes = [], $number = 10)
+    {
+        if (count($eagerAttributes) > 0) {
+            return $this->_model->with($eagerAttributes)->paginate($number);
+        }
+        return $this->_model->paginate($number);
+    }
+
+    /**
      * Get one
      * @param $id
      * @return mixed
