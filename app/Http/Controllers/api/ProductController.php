@@ -58,22 +58,27 @@ class ProductController extends Controller
             return ['status' => 0, 'message' => $validator->errors()];
         }
 
-        if ($request->file('thumbnail')) {
-            $imagePath = $request->file('thumbnail');
-            $imageName = $imagePath->getClientOriginalName();
-            $path = $request->file('thumbnail')->storeAs('uploads', $imageName, 'public');
-        }
+        try {
+            if ($request->file('thumbnail')) {
+                $imagePath = $request->file('thumbnail');
+                $imageName = $imagePath->getClientOriginalName();
+                $path = $request->file('thumbnail')->storeAs('uploads', $imageName, 'public');
+            }
 
-        $this->product->create([
-            'name' => $request->name,
-            'manufacturer' => $request->manufacturer,
-            'batch_code' => $request->batch_code,
-            'barcode' => $request->barcode,
-            'quantity' => $request->quantity,
-            'cost_price' => $request->cost_price,
-            'sell_price' => $request->sell_price,
-            'thumbnail' => '/storage/' . $path,
-        ]);
+            $this->product->create([
+                'name' => $request->name,
+                'manufacturer' => $request->manufacturer,
+                'batch_code' => $request->batch_code,
+                'barcode' => $request->barcode,
+                'quantity' => $request->quantity,
+                'cost_price' => $request->cost_price,
+                'sell_price' => $request->sell_price,
+                'thumbnail' => '/storage/' . $path,
+            ]);
+        } catch (\Exception $e) {
+            return ['status' => 0, 'message' => $e->getMessage()];
+        }
+        return ['status' => 1, 'message' => 'Thành công'];
     }
 
     /**
