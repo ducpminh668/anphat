@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\Product\ProductRepository;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -50,8 +51,8 @@ class ProductController extends Controller
             'quantity' => 'required',
             'cost_price' => 'required',
             'sell_price' => 'required',
-            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'product_images.*.image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            // 'product_images.*.image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         if ($validator->fails()) {
@@ -100,7 +101,11 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
+        $product = $this->product->find($id);
+        if ($product) {
+            return ['status' => 1, 'data' => $product];
+        }
+        return ['status' => 0, 'message' => 'Not Found'];
     }
 
     /**
@@ -112,7 +117,55 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'manufacturer' => 'required',
+            'batch_code' => 'required',
+            'barcode' => 'required',
+            'quantity' => 'required',
+            'cost_price' => 'required',
+            'sell_price' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return ['status' => 0, 'message' => $validator->errors()];
+        }
+
+        try {
+            if ($request->file('thumbnail')) {
+                // If have thumbnail file, remove old file
+                if (file_exists(public_path($product->thumbnail))) {
+                    unlink(public_path($product->thumbnail));
+                }
+                $imagePath = $request->file('thumbnail');
+                $imageName = $imagePath->getClientOriginalName();
+                $path = $request->file('thumbnail')->storeAs('uploads', $imageName, 'public');
+                $this->product->update($id, [
+                    'name' => $request->name,
+                    'manufacturer' => $request->manufacturer,
+                    'batch_code' => $request->batch_code,
+                    'barcode' => $request->barcode,
+                    'quantity' => $request->quantity,
+                    'cost_price' => $request->cost_price,
+                    'sell_price' => $request->sell_price,
+                    'thumbnail' => '/storage/' . $path,
+                ]);
+            } else {
+                // If not have thumbnail file
+                $this->product->update($id, [
+                    'name' => $request->name,
+                    'manufacturer' => $request->manufacturer,
+                    'batch_code' => $request->batch_code,
+                    'barcode' => $request->barcode,
+                    'quantity' => $request->quantity,
+                    'cost_price' => $request->cost_price,
+                    'sell_price' => $request->sell_price
+                ]);
+            }
+        } catch (\Exception $e) {
+            return ['status' => 0, 'message' => $e->getMessage()];
+        }
+        return ['status' => 1, 'message' => 'success'];
     }
 
     /**
