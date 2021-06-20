@@ -21,7 +21,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return $this->product->paginate(['images']);
+        return $this->product->getAll(['images']);
     }
 
     /**
