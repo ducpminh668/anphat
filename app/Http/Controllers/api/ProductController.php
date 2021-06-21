@@ -69,6 +69,22 @@ class ProductController extends Controller
         }
     }
 
+    public function deleteImage(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return ['status' => 0, 'message' => $validator->errors()];
+        }
+
+        if (!$this->productImage->delete($request->id)) {
+            return ['status' => 0, 'message' => 'Not found'];
+        }
+        return ['status' => 1, $request->id];
+    }
+
     /**
      * Store a newly created resource in storage.
      *

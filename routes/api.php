@@ -26,6 +26,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('products', 'api\ProductController');
     // Store product images
     Route::post('store_product_image', 'api\ProductController@storeImage');
+    // Delete product images
+    Route::delete('delete_product_image', 'api\ProductController@deleteImage');
     Route::resource('products', 'api\ProductController');
     Route::resource('orders', 'api\OrderController');
 });
