@@ -5,15 +5,18 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Repositories\Product\ProductRepository;
+use App\Repositories\Product\ProductImageRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
     public function __construct(
-        ProductRepository $product
+        ProductRepository $product,
+        ProductImageRepository $productImage
     ) {
         $this->product = $product;
+        $this->productImage = $productImage;
     }
     /**
      * Display a listing of the resource.
@@ -33,6 +36,37 @@ class ProductController extends Controller
     public function create()
     {
         //
+    }
+
+    public function storeImage(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'product_id' => 'required|numeric',
+            'images.*.' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2024'
+        ]);
+
+        if ($validator->fails()) {
+            return ['status' => 0, 'message' => $validator->errors()];
+        }
+        $product = $this->product->find($request->product_id);
+
+        if (!$product) {
+            return ['status' => 0, 'message' => 'Not found'];
+        }
+
+        if ($request->hasFile('images')) {
+            $files = $request->images;
+
+            foreach ($files as $file) {
+                $imageName = $file->getClientOriginalName();
+                $path = $file->storeAs('uploads', $imageName, 'public');
+                $this->productImage->create([
+                    'product_id' => $product->id,
+                    'image' => $path
+                ]);
+            }
+            return ['status' => 1, 'message' => 'Success'];
+        }
     }
 
     /**

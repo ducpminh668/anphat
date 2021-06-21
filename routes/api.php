@@ -24,5 +24,8 @@ Route::post('register', 'api\UserController@register');
 Route::group(['middleware' => 'auth:api'], function () {
     Route::post('details', 'api\UserController@details');
     Route::resource('products', 'api\ProductController');
+    // Store product images
+    Route::post('store_product_image', 'api\ProductController@storeImage');
+    Route::resource('products', 'api\ProductController');
     Route::resource('orders', 'api\OrderController');
 });
