@@ -82,7 +82,7 @@ class ProductController extends Controller
         if (!$this->productImage->delete($request->id)) {
             return ['status' => 0, 'message' => 'Not found'];
         }
-        return ['status' => 1, $request->id];
+        return ['status' => 1, 'data' => $request->id];
     }
 
     /**
@@ -226,6 +226,17 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $validator = Validator::make(['id' => $id], [
+            'id' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return ['status' => 0, 'message' => $validator->errors()];
+        }
+
+        if (!$this->product->delete($id)) {
+            return ['status' => 0, 'message' => 'Not found'];
+        }
+        return ['status' => 1, 'data' => $id];
     }
 }
