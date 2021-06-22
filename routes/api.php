@@ -34,4 +34,6 @@ Route::group(['middleware' => 'auth:api'], function () {
     // Delete order details
     Route::delete('delete_order_detail', 'api\OrderController@deleteOrderDetail');
     Route::resource('customers', 'api\CustomerController');
+    Route::resource('roles', 'api\RoleController');
+    Route::resource('permissions', 'api\PermissionController');
 });

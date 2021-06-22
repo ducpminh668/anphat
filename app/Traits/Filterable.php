@@ -11,19 +11,9 @@ trait Filterable
         $param = $request->all();
         foreach ($param as $field => $value) {
             $method = 'filter' . Str::studly($field);
-
             if ($value != '') {
-                if (method_exists($this, $method)) {
+                if (method_exists($this, $method) && in_array($field, $this->filterable)) {
                     $this->{$method}($query, $value);
-                } else {
-                    if (!empty($this->filterable) && is_array($this->filterable)) {
-                        if (in_array($field, $this->filterable)) {
-                            $query->where($this->table . '.' . $field, $value);
-                        } elseif (key_exists($field, $this->filterable)) {
-                            $query->where($this->table . '.'
-                                . $this->filterable[$field], $value);
-                        }
-                    }
                 }
             }
         }
@@ -49,6 +39,11 @@ trait Filterable
     public function filterContactName($query, $value)
     {
         return $query->where('contact_name', 'LIKE', '%' . $value . '%');
+    }
+
+    public function filterName($query, $value)
+    {
+        return $query->where('name', $value);
     }
 
     public function filterUserId($query, $value)

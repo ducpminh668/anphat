@@ -8,9 +8,16 @@ use App\Repositories\Product\ProductRepository;
 use App\Repositories\Product\ProductImageRepository;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\Filterable;
 
 class ProductController extends Controller
 {
+    use Filterable;
+
+    protected $filterable = [
+        'name'
+    ];
+
     public function __construct(
         ProductRepository $product,
         ProductImageRepository $productImage
@@ -26,6 +33,16 @@ class ProductController extends Controller
     public function index()
     {
         return $this->product->getAll(['images']);
+    }
+
+    public function filter()
+    {
+        try {
+            $orders = \App\Models\Product::filter($request)->get();
+            return ['status' => 1, 'data' => $orders];
+        } catch (\Exception $e) {
+            return ['status' => 0, 'error' => $e->getMessage()];
+        }
     }
 
     /**
