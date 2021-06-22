@@ -251,9 +251,14 @@ class ProductController extends Controller
             return ['status' => 0, 'message' => $validator->errors()];
         }
 
-        if (!$this->product->delete($id)) {
-            return ['status' => 0, 'message' => 'Not found'];
+        $product = $this->product->find($id);
+
+        if ($product) {
+            \App\Models\ProductImage::where('product_id', $product->id)->delete();
+            $this->product->delete($id);
+            return ['status' => 1, 'data' => $id];
         }
-        return ['status' => 1, 'data' => $id];
+
+        return ['status' => 0, 'message' => 'Not found'];
     }
 }
