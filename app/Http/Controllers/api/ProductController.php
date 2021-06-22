@@ -82,8 +82,8 @@ class ProductController extends Controller
                     'image' => $path
                 ]);
             }
-            return ['status' => 1, 'message' => 'Success'];
         }
+        return ['status' => 1, 'message' => 'Success'];
     }
 
     public function deleteImage(Request $request)
