@@ -93,7 +93,7 @@ abstract class EloquentRepository
         $result = $this->find($id);
         if ($result) {
             $result->update($attributes);
-            return 'jzcv';
+            return true;
         }
 
         return false;

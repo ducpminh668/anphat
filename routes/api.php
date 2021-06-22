@@ -30,5 +30,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::delete('delete_product_image', 'api\ProductController@deleteImage');
     Route::resource('products', 'api\ProductController');
     Route::resource('orders', 'api\OrderController');
+    Route::get('filter_orders', 'api\OrderController@filter');
+    // Delete order details
+    Route::delete('delete_order_detail', 'api\OrderController@deleteOrderDetail');
     Route::resource('customers', 'api\CustomerController');
 });

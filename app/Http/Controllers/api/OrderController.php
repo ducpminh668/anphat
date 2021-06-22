@@ -28,6 +28,21 @@ class OrderController extends Controller
     }
 
     /**
+     * Display a filter of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function filter(Request $request)
+    {
+        try {
+            $orders = \App\Models\Order::filter($request)->get();
+            return ['status' => 1, 'data' => $orders];
+        } catch (\Exception $e) {
+            return ['status' => 0, 'error' => $e->getMessage()];
+        }
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -35,6 +50,22 @@ class OrderController extends Controller
     public function create()
     {
         //
+    }
+
+    public function deleteOrderDetail(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return ['status' => 0, 'message' => $validator->errors()];
+        }
+
+        if (!$this->orderDetail->delete($request->id)) {
+            return ['status' => 0, 'message' => 'Not found'];
+        }
+        return ['status' => 1, 'data' => $request->id];
     }
 
     /**
@@ -93,7 +124,11 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        //
+        $order = $this->order->find($id, ['details']);
+        if (!$order) {
+            return ['status' => 0, 'message' => 'NotFound'];
+        }
+        return ['status' => 1, 'data' => $order];
     }
 
     /**
@@ -104,7 +139,11 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        //
+        $customer = $this->customer->find($id);
+        if ($customer) {
+            return ['status' => 1, 'data' => $customer];
+        }
+        return ['status' => 0, 'message' => 'Not Found'];
     }
 
     /**
@@ -116,7 +155,48 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'phone' => 'required',
+            'address' => 'required',
+            'contact_name' => 'required',
+            'customer_id' => 'required',
+            'orderDetail.*.product_name' => 'required',
+            'orderDetail.*.sell_price' => 'required',
+            'orderDetail.*.discount_price' => 'required',
+            'orderDetail.*.quantity' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return ['status' => 0, 'message' => $validator->errors()];
+        }
+
+        try {
+            $flag = $this->order->update($id, [
+                'phone' => $request->phone,
+                'address' => $request->address,
+                'contact_name' => $request->contact_name,
+                'user_id' => auth()->user()->id,
+                'customer_id' => $request->customer_id,
+                'total' => $request->total
+            ]);
+
+            if ($flag) {
+                foreach ($request->orderDetail as $key => $item) {
+                    $this->orderDetail->create([
+                        'order_id' => $id,
+                        'product_name' => $item['product_name'],
+                        'sell_price' => $item['sell_price'],
+                        'discount_price' => $item['discount_price'],
+                        'quantity' => $item['quantity'],
+                    ]);
+                }
+                return ['status' => 1, 'message' => 'Thành công'];
+            } else {
+                return ['status' => 0, 'message' => 'Not found'];
+            }
+        } catch (\Exception $e) {
+            return ['status' => 0, 'message' => $e->getMessage()];
+        }
     }
 
     /**
@@ -127,6 +207,17 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $validator = Validator::make(['id' => $id], [
+            'id' => 'required|numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return ['status' => 0, 'message' => $validator->errors()];
+        }
+
+        if (!$this->order->delete($id)) {
+            return ['status' => 0, 'message' => 'Not found'];
+        }
+        return ['status' => 1, 'data' => $id];
     }
 }
