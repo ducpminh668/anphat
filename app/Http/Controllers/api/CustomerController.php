@@ -21,7 +21,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return $this->customer->paginate([], 1);
+        return $this->customer->paginate([], 10);
     }
 
     /**
