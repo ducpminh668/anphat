@@ -167,7 +167,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = $this->product->find($id);
+        $product = $this->product->find($id, ['images']);
         if ($product) {
             return ['status' => 1, 'data' => $product];
         }
