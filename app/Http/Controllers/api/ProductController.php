@@ -71,9 +71,9 @@ class ProductController extends Controller
             return ['status' => 0, 'message' => 'Not found'];
         }
 
-        if ($request->hasFile('images')) {
+        if ($request->images) {
             $files = $request->images;
-
+            return $files;
             foreach ($files as $file) {
                 $imageName = $file->getClientOriginalName();
                 $path = $file->storeAs('uploads', $imageName, 'public');
