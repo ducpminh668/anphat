@@ -73,7 +73,6 @@ class ProductController extends Controller
 
         if ($request->images) {
             $files = $request->images;
-            return $files;
             foreach ($files as $file) {
                 $imageName = $file->getClientOriginalName();
                 $path = $file->storeAs('uploads', $imageName, 'public');
