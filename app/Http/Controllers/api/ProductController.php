@@ -200,7 +200,7 @@ class ProductController extends Controller
 
         try {
             if ($request->file('thumbnail')) {
-                $product = $this->product->find($product);
+                $product = $this->product->find($id);
                 // If have thumbnail file, remove old file
                 if (file_exists(public_path($product->thumbnail))) {
                     unlink(public_path($product->thumbnail));
