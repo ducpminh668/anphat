@@ -71,18 +71,21 @@ class ProductController extends Controller
             return ['status' => 0, 'message' => 'Not found'];
         }
 
+        $successData = [];
+
         if ($request->images) {
             $files = $request->images;
             foreach ($files as $file) {
                 $imageName = $file->getClientOriginalName();
                 $path = $file->storeAs('uploads', $imageName, 'public');
-                $this->productImage->create([
+                $successData[] = $this->productImage->create([
                     'product_id' => $product->id,
                     'image' => $path
                 ]);
             }
         }
-        return ['status' => 1, 'message' => 'Success'];
+
+        return ['status' => 1, 'message' => $successData];
     }
 
     public function deleteImage(Request $request)
@@ -96,7 +99,7 @@ class ProductController extends Controller
         }
 
         if (!$this->productImage->delete($request->id)) {
-            return ['status' => 0, 'message' => 'Not found'];
+            return ['status' => 0, 'data' => 'Not found'];
         }
         return ['status' => 1, 'data' => $request->id];
     }
