@@ -32,7 +32,7 @@ class UserController extends Controller
                     'token' => $user->createToken('MyApp')->accessToken,
                     'user' => $user,
                     'permissions' => $user->allPermissions()->pluck('name'),
-                    'redirectTo' => '/'
+                    'roles' => $user->roles()->pluck('name'),
                 ],
                 $this->successStatus
             );
