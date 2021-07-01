@@ -124,7 +124,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = $this->order->find($id, ['details']);
+        $order = $this->order->find($id, ['details', 'customer']);
         if (!$order) {
             return ['status' => 0, 'message' => 'NotFound'];
         }
