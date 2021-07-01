@@ -139,9 +139,9 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        $customer = $this->customer->find($id);
-        if ($customer) {
-            return ['status' => 1, 'data' => $customer];
+        $order = $this->order->find($id);
+        if ($order) {
+            return ['status' => 1, 'data' => $order];
         }
         return ['status' => 0, 'message' => 'Not Found'];
     }

@@ -16,11 +16,11 @@ class ProductImageSeeder extends Seeder
         $id = Product::first()->id;
         ProductImage::create([
             'product_id' => $id,
-            'image' => 'https://media3.scdn.vn/img4/2021/04_11/3k5VkNTFTw5A0KFwGMk3_simg_de2fe0_320x320_maxb.jpg',
+            'image' => '/storage/uploads/5.jpg',
         ]);
         ProductImage::create([
             'product_id' => $id,
-            'image' => 'https://media3.scdn.vn/img4/2021/04_11/soi3O1vrLUTAxaHlLUDQ_simg_de2fe0_320x320_maxb.jpg',
+            'image' => '/storage/uploads/6.jpg',
         ]);
     }
 }

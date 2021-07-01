@@ -16,6 +16,7 @@ class CustomerSeeder extends Seeder
             'name' => 'Nguyen Ba Ngoc',
             'phone' => '098878828',
             'address' => 'Ngoc Ha - Ba Dinh - Ha Noi',
+            'user_id' => 1
         ]);
     }
 }

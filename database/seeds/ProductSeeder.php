@@ -16,7 +16,7 @@ class ProductSeeder extends Seeder
             'name' => 'Vòi xịt vệ sinh',
             'batch_code' => '17MAR21',
             'barcode' => '8KYUM83d',
-            'thumbnail' => 'data:image/jpeg;base64,/9j…eQtr51t0q4mlKUqoUpSgUpSg//Z',
+            'thumbnail' => '/storage/uploads/4.jpg',
             'quantity' => 100,
             'cost_price' => 30000,
             'sell_price' => 120000
