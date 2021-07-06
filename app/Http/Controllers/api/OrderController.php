@@ -24,7 +24,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return $this->order->paginate(['details'], 5);
+        return $this->order->paginate(['details', 'customer'], 5);
     }
 
     /**
