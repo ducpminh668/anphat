@@ -11,4 +11,9 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
+
+    public function promotions()
+    {
+        return $this->belongsToMany('App\Models\Product');
+    }
 }
