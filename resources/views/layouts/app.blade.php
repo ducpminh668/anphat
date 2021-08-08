@@ -41,9 +41,9 @@
 
     <!-- Main navbar -->
     <div class="navbar navbar-expand-md navbar-dark">
-        <div class="navbar-brand">
+        <div class="navbar-brand" style="display:flex;align-items:center;padding: 0">
             <a href="index.html" class="d-inline-block">
-                <img src="/admin/global_assets/images/logo_light.png" alt="">
+                <img src="/images/logo.jpg" alt="" style="height: 36px;">
             </a>
         </div>
 
