@@ -16,11 +16,13 @@ class CreateImportsTable extends Migration
         Schema::create('imports', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('code')->unique();
-            $table->unsignedBigInteger('supplier_id')->unsigned();
-            $table->foreign('supplier_id')->references('id')->on('suppliers');
+            $table->string('supplier');
             $table->unsignedBigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
             $table->decimal('total', 12, 0);
+            $table->integer('product_count');
+            $table->integer('quantity');
+            $table->longText('note')->nullable();
             $table->timestamps();
         });
     }

@@ -62,8 +62,8 @@
                      <a href="#" class="nav-link"><i class="icon-download7"></i> <span>Quản lý nhập kho</span></a>
 
                      <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                         <li class="nav-item"><a href="index.html" class="nav-link">Danh sách phiếu nhập</a></li>
-                         <li class="nav-item"><a href="index.html" class="nav-link">Tạo phiếu nhập</a></li>
+                         <li class="nav-item"><a href="/imports/index" class="nav-link">Danh sách phiếu nhập</a></li>
+                         <li class="nav-item"><a href="/imports/create" class="nav-link">Tạo phiếu nhập</a></li>
                      </ul>
                  </li>
                  <li class="nav-item nav-item-submenu">

@@ -32,7 +32,11 @@
     <script src="/admin/global_assets/js/plugins/ui/prism.min.js"></script>
 
     <script src="/admin/js/app.js"></script>
-    <script src="/admin/global_assets/js/demo_pages/alpaca_basic.js"></script>
+    <!-- <script src="/admin/global_assets/js/demo_pages/alpaca_basic.js"></script> -->
+    <script src="/admin/global_assets/js/plugins/extensions/jquery_ui/interactions.min.js"></script>
+    <script src="/admin/global_assets/js/demo_pages/form_select2.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
     <!-- /theme JS files -->
 
 </head>
@@ -190,7 +194,10 @@
                         <a href="#" class="dropdown-item"><i class="icon-comment-discussion"></i> Messages <span class="badge badge-pill bg-blue ml-auto">58</span></a>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item"><i class="icon-cog5"></i> Account settings</a>
-                        <a href="#" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>
+                        <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            {{ csrf_field() }}
+                        </form>
                     </div>
                 </li>
             </ul>
@@ -268,7 +275,7 @@
 
             <!-- Content area -->
             <div class="content">
-                
+
                 <!-- Text inputs title -->
                 <!-- <div class="mb-3">
                     <h6 class="mb-0 font-weight-semibold">

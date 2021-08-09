@@ -30,12 +30,12 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->product->getAll(['images']);
+        return \App\Models\Product::where('name', 'like', '%' . $request->name . '%')->paginate(30);
     }
 
-    public function filter()
+    public function filter(Request $request)
     {
         try {
             $orders = \App\Models\Product::filter($request)->get();

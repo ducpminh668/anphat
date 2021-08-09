@@ -19,21 +19,37 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::post('login', 'api\UserController@login');
-Route::post('register', 'api\UserController@register');
-Route::group(['middleware' => 'auth:api'], function () {
-    Route::post('details', 'api\UserController@details');
-    Route::resource('products', 'api\ProductController');
-    // Store product images
-    Route::post('store_product_image', 'api\ProductController@storeImage');
-    // Delete product images
-    Route::delete('delete_product_image', 'api\ProductController@deleteImage');
-    Route::resource('products', 'api\ProductController');
-    Route::resource('orders', 'api\OrderController');
-    Route::get('filter_orders', 'api\OrderController@filter');
-    // Delete order details
-    Route::delete('delete_order_detail', 'api\OrderController@deleteOrderDetail');
-    Route::resource('customers', 'api\CustomerController');
-    Route::resource('roles', 'api\RoleController');
-    Route::resource('permissions', 'api\PermissionController');
-});
+// Route::post('login', 'api\UserController@login');
+// Route::post('register', 'api\UserController@register');
+// Route::group(['middleware' => 'auth:api'], function () {
+//     Route::post('details', 'api\UserController@details');
+//     Route::resource('products', 'api\ProductController');
+//     // Store product images
+//     Route::post('store_product_image', 'api\ProductController@storeImage');
+//     // Delete product images
+//     Route::delete('delete_product_image', 'api\ProductController@deleteImage');
+//     Route::resource('products', 'api\ProductController');
+//     Route::resource('orders', 'api\OrderController');
+//     Route::get('filter_orders', 'api\OrderController@filter');
+//     // Delete order details
+//     Route::delete('delete_order_detail', 'api\OrderController@deleteOrderDetail');
+//     Route::resource('customers', 'api\CustomerController');
+//     Route::resource('roles', 'api\RoleController');
+//     Route::resource('permissions', 'api\PermissionController');
+// });
+Route::post('details', 'api\UserController@details');
+Route::resource('products', 'api\ProductController');
+// Store product images
+Route::post('store_product_image', 'api\ProductController@storeImage');
+// Delete product images
+Route::delete('delete_product_image', 'api\ProductController@deleteImage');
+Route::resource('products', 'api\ProductController');
+Route::resource('orders', 'api\OrderController');
+Route::get('filter_orders', 'api\OrderController@filter');
+// Delete order details
+Route::delete('delete_order_detail', 'api\OrderController@deleteOrderDetail');
+Route::resource('customers', 'api\CustomerController');
+Route::resource('roles', 'api\RoleController');
+Route::resource('permissions', 'api\PermissionController');
+
+Route::get('products', 'api\ProductController@index');

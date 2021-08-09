@@ -6,5 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Import extends Model
 {
-    //
+    protected $guarded = [];
+
+    public function details()
+    {
+        return $this->hasMany(ImportDetail::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

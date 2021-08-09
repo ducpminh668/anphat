@@ -20,7 +20,7 @@ class CreateImportDetailsTable extends Migration
             $table->unsignedBigInteger('product_id')->unsigned();
             $table->foreign('product_id')->references('id')->on('products');
             $table->integer('quantity');
-            $table->decimal('cost_price', 12, 0);
+            $table->decimal('price', 12, 0);
             $table->timestamps();
         });
     }
