@@ -114,11 +114,6 @@ class ProductController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'manufacturer' => 'required',
-            'batch_code' => 'required',
-            'barcode' => 'required',
-            'quantity' => 'required',
-            'cost_price' => 'required',
             'sell_price' => 'required',
             'thumbnail' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
             // 'product_images.*.image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
@@ -138,9 +133,8 @@ class ProductController extends Controller
             $this->product->create([
                 'name' => $request->name,
                 'manufacturer' => $request->manufacturer,
-                'batch_code' => $request->batch_code,
                 'barcode' => $request->barcode,
-                'quantity' => $request->quantity,
+                'quantity' => 0,
                 'cost_price' => $request->cost_price,
                 'sell_price' => $request->sell_price,
                 'thumbnail' => '/storage/' . $path,

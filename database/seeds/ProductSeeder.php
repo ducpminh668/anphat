@@ -14,7 +14,6 @@ class ProductSeeder extends Seeder
     {
         Product::create([
             'name' => 'Vòi xịt vệ sinh',
-            'batch_code' => '17MAR21',
             'barcode' => '8KYUM83d',
             'thumbnail' => '/storage/uploads/4.jpg',
             'quantity' => 100,

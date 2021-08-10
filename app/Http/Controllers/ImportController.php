@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Import;
+use App\Models\ImportDetail;
 use Illuminate\Http\Request;
 
 class ImportController extends Controller
@@ -36,7 +37,32 @@ class ImportController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $total = 0;
+        $count = 0;
+        foreach($request->cart as $item) {
+            $count += $item->count;
+            $total += $item->im_total;
+        }
+        $im = Import::create([
+            'code' => $request->code,
+            'supplier' => $request->supplier,
+            'note' => $request->note,
+            'product_count' => count($request->cart),
+            'quantity' => $count,
+            'total' => $total,
+            'user_id' => auth()->user()->id,
+        ]);
+        foreach($request->cart as $item) { 
+            ImportDetail::create([
+                'import_id' => $im->id,
+                'product_id' => $item->id,
+                'product_name' => $item->name,
+                'dvt' => $item->dvt,
+                'manufacturer' => $item->manufacturer,
+                'quantity' => $item->count,
+                'price' => $item->im_price,
+            ]);
+        }
     }
 
     /**

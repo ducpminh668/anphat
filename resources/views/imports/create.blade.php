@@ -20,16 +20,16 @@
                     <fieldset>
                         <div class="form-group">
                             <label>Tên nhà cung cấp:</label>
-                            <input type="text" class="form-control" value="PO{{date('dmY')}}{{rand(1000,9999)}}" name="code" placeholder="Nhập tên nhà cung cấp" readonly>
+                            <input type="text" class="form-control" value="PO{{date('dmY')}}{{rand(1000,9999)}}" name="code" id="code" placeholder="Nhập tên nhà cung cấp" readonly>
                         </div>
                         <div class="form-group">
                             <label>Tên nhà cung cấp:</label>
-                            <input type="text" class="form-control" placeholder="Nhập tên nhà cung cấp" required>
+                            <input type="text" class="form-control" placeholder="Nhập tên nhà cung cấp" required id="supplier" value="An Phát - sản xuất">
                         </div>
 
                         <div class="form-group">
                             <label>Nhập ghi chú:</label>
-                            <textarea rows="5" cols="5" class="form-control" placeholder="Nhập ghi chú cho phiếu nhập"></textarea>
+                            <textarea rows="5" cols="5" class="form-control" placeholder="Nhập ghi chú cho phiếu nhập" id="note"></textarea>
                         </div>
                     </fieldset>
                 </div>
@@ -40,7 +40,7 @@
 
 <div class="card">
     <div class="card-body">
-        <button class="btn btn-primary mb-2">Thêm sản phẩm mới</button>
+        <button class="btn btn-primary mb-2" data-toggle="modal" data-target="#modal_addProduct">Thêm sản phẩm mới</button>
         <div class="form-group">
             <select class="form-control select-remote-data" data-fouc style="min-height:37px">
                 <option value="">Chọn sản phẩm</option>
@@ -90,9 +90,71 @@
     </div>
 </div>
 <div style="float:right">
-    <button type="button" class="btn btn-primary">Tạo phiếu</button>
+    <button type="button" class="btn btn-primary" onclick="submitImport()">Tạo phiếu</button>
 </div>
 
+<!-- modal add product  -->
+<div id="modal_addProduct" class="modal fade" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thêm sản phẩm mới</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form action="">
+                            <div class="form-group row"><label class="col-md-3 col-form-label">Tên sản phẩm</label>
+                                <div class="col-md-9">
+                                    <input name="name" id="product_name" type="text" placeholder="Tên sản phẩm" class="form-control">
+                                    <!-- <span class="form-text text-muted">Here goes your name</span> -->
+                                </div>
+                            </div>
+                            <div class="form-group row"><label class="col-md-3 col-form-label">Nơi sản xuất</label>
+                                <div class="col-md-9">
+                                    <input name="manufacturer" id="manufacturer" type="text" placeholder="Nơi sản xuất" class="form-control">
+                                    <!-- <span class="form-text text-muted">Here goes your name</span> -->
+                                </div>
+                            </div>
+                            <div class="form-group row"><label class="col-md-3 col-form-label">Mã Barcode</label>
+                                <div class="col-md-9">
+                                    <input name="barcode" id="barcode" type="text" placeholder="Mã barcode" class="form-control">
+                                    <!-- <span class="form-text text-muted">Here goes your name</span> -->
+                                </div>
+                            </div>
+                            <div class="form-group row"><label class="col-md-3 col-form-label">Giá bán</label>
+                                <div class="col-md-9">
+                                    <input name="sell_price" id="sell_price" type="text" placeholder="Giá bán" class="form-control">
+                                    <!-- <span class="form-text text-muted">Here goes your name</span> -->
+                                </div>
+                            </div>
+                            <div class="form-group row"><label class="col-md-3 col-form-label">Ảnh sản phẩm</label>
+                                <div class="col-md-9">
+                                    <input name="thumbnail" id="thumbnail" type="file" class="form-control">
+                                    <!-- <span class="form-text text-muted">Here goes your name</span> -->
+                                </div>
+                            </div>
+                            <!-- <div class="form-group row"><label class="col-md-3 col-form-label">How awesome is this?</label>
+                                <div class="col-md-9">
+                                    <div class="form-check"><label class="form-check-label"><input type="radio" class="form-check-input" name="awesomeness" id="awesomeness-0" value="Really awesome" checked="">Really awesomeness</label></div>
+                                    <div class="form-check"><label class="form-check-label"><input type="radio" class="form-check-input" name="awesomeness" id="awesomeness-1" value="Super awesome">Super awesome</label></div>
+                                </div>
+                            </div> -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal">Thoát</button>
+                <button type="button" class="btn bg-primary" onclick="submitProduct()">Tạo sản phẩm</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end modal add product  -->
 
 <script>
     let cart = [];
@@ -166,6 +228,7 @@
 
     function renderCart() {
         let content = ''
+        console.log(cart)
         cart.map((item, index) => {
             content += `
             <tr>
@@ -185,8 +248,9 @@
                     </tr>
         `
         });
+        $('.box').html('')
         $('.box').append(content);
-        // $('.im_price').mask("#,##0" , {reverse: true});
+
     }
 
     $(document).on('change', '.im_price', function() {
@@ -206,5 +270,82 @@
         $('.box').html('')
         renderCart()
     })
+    $('#sell_price').mask("#,##0", {
+        reverse: true
+    });
+
+    function submitProduct() {
+        let name = $('#product_name').val()
+        let manufacturer = $('#manufacturer').val()
+        let barcode = $('#barcode').val()
+        let sell_price = $('#sell_price').val().replaceAll(",", "")
+        let thumbnail = $('#thumbnail')[0].files[0]
+
+        let data = new FormData();
+        data.append('name', name);
+        data.append('manufacturer', manufacturer);
+        data.append('barcode', barcode);
+        data.append('sell_price', sell_price);
+        data.append('thumbnail', thumbnail);
+
+        if (name && parseInt(sell_price) && thumbnail && barcode) {
+            $('#modal_addProduct').modal('hide');
+            axios.post('/api/products', data).then(res => {
+                if (res.data.status == 1) {
+                    $('#product_name').val('')
+                    $('#manufacturer').val('')
+                    $('#sell_price').val('')
+                    $('#sell_price').val('')
+                    $('#thumbnail').val(null)
+
+                }
+            }).catch(err => {
+                alert(err.message)
+            })
+        } else {
+            alert('Tên, giá bán và Ảnh là trường bắt buộc')
+        }
+    }
+
+    function submitImport() {
+        let code = $('#code').val()
+        let supplier = $('#supplier').val()
+        let note = $('#note').val()
+        if (!supplier) {
+            alert('Nhà cung cấp là trưởng bắt buộc!')
+            return
+        }
+        if (validateCart(cart)) {
+            axios.post('/api/imports', {
+                code,
+                supplier,
+                note,
+                cart
+            }).then(res => {
+                console.log(res.data);
+            })
+        }
+    }
+
+    function validateCart(cart) {
+        let flag = true;
+        if (cart.length <= 0) {
+            alert('Chưa có sản phẩm')
+            return false;
+        }
+        for (const item of cart) {
+            if (parseInt(item.count) <= 0) {
+                alert('Số lượng sản phẩm không hợp lệ')
+                flag = false;
+                break;
+            }
+            if (parseInt(item.im_price) <= 0) {
+                alert('Giá nhập không hợp lệ')
+                flag = false;
+                break;
+            }
+        }
+        return flag
+    }
 </script>
 @stop
