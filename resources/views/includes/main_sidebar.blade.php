@@ -66,21 +66,21 @@
                          <li class="nav-item"><a href="/imports/create" class="nav-link">Tạo phiếu nhập</a></li>
                      </ul>
                  </li>
-                 <li class="nav-item nav-item-submenu">
+                 <!-- <li class="nav-item nav-item-submenu">
                      <a href="#" class="nav-link"><i class="icon-copy"></i> <span>Danh mục sản phẩm</span></a>
 
                      <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                         <li class="nav-item"><a href="index.html" class="nav-link">Danh sách danh mục sản phẩm</a></li>
-                         <li class="nav-item"><a href="index.html" class="nav-link">Thêm danh mục sản phẩm</a></li>
+                         <li class="nav-item"><a href="/categories/" class="nav-link">Danh sách danh mục sản phẩm</a></li>
+                         <li class="nav-item"><a href="/categories/create" class="nav-link">Thêm danh mục sản phẩm</a></li>
 
                      </ul>
-                 </li>
+                 </li> -->
                  <li class="nav-item nav-item-submenu">
                      <a href="#" class="nav-link"><i class="icon-copy"></i> <span>Sản phẩm</span></a>
 
                      <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                         <li class="nav-item"><a href="index.html" class="nav-link">Danh sách sản phẩm</a></li>
-                         <li class="nav-item"><a href="index.html" class="nav-link">Thêm sản phẩm</a></li>
+                         <li class="nav-item"><a href="/products/" class="nav-link">Danh sách sản phẩm</a></li>
+                         <li class="nav-item"><a href="/products/create" class="nav-link">Thêm sản phẩm</a></li>
 
                      </ul>
                  </li>

@@ -27,4 +27,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/imports/index', 'ImportController@index');
     Route::get('/imports/create', 'ImportController@create');
     Route::post('/imports', 'ImportController@store');
+
+    Route::resource('products', 'ProductController');
 });

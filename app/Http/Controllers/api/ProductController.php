@@ -132,6 +132,7 @@ class ProductController extends Controller
 
             $this->product->create([
                 'name' => $request->name,
+                'category_id' => 1,
                 'manufacturer' => $request->manufacturer,
                 'barcode' => $request->barcode,
                 'quantity' => 0,
