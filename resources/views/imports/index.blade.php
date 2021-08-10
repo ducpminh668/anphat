@@ -70,7 +70,7 @@
                                                     @foreach($item->details as $index=>$detail)
                                                     <tr>
                                                         <td>{{$index + 1}}</td>
-                                                        <td>{{$detail->product_id}}</td>
+                                                        <td>{{$detail->product_name}}</td>
                                                         <td>{{$detail->quantity}}</td>
                                                         <td>{{number_format($detail->price, 0, '', ',')}}</td>
                                                         <td>{{number_format($detail->quantity * $detail->price, 0, '', ',') }}</td>

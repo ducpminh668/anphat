@@ -135,7 +135,7 @@ class ProductController extends Controller
                 'manufacturer' => $request->manufacturer,
                 'barcode' => $request->barcode,
                 'quantity' => 0,
-                'cost_price' => $request->cost_price,
+                'cost_price' => $request->cost_price ?? 0,
                 'sell_price' => $request->sell_price,
                 'thumbnail' => '/storage/' . $path,
             ]);

@@ -90,7 +90,7 @@
     </div>
 </div>
 <div style="float:right">
-    <button type="button" class="btn btn-primary" onclick="submitImport()">Tạo phiếu</button>
+    <button type="button" class="btn btn-primary" id="createImport" onclick="submitImport()">Tạo phiếu</button>
 </div>
 
 <!-- modal add product  -->
@@ -308,6 +308,7 @@
     }
 
     function submitImport() {
+       
         let code = $('#code').val()
         let supplier = $('#supplier').val()
         let note = $('#note').val()
@@ -316,13 +317,19 @@
             return
         }
         if (validateCart(cart)) {
-            axios.post('/api/imports', {
+            $('#createImport').hide();
+            axios.post('/imports', {
                 code,
                 supplier,
                 note,
                 cart
             }).then(res => {
-                console.log(res.data);
+                if (res.data.status == 1) {
+                    window.location.reload();
+                } else {
+                    alert('Tạo phiếu không thàn công xin thử lại')
+                }
+                $('#createImport').show();
             })
         }
     }

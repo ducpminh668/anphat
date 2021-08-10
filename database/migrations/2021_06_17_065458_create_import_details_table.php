@@ -21,7 +21,7 @@ class CreateImportDetailsTable extends Migration
             $table->foreign('product_id')->references('id')->on('products');
             $table->string('product_name');
             $table->string('dvt');
-            $table->string('manufacturer');
+            $table->string('manufacturer')->nullable();
             $table->integer('quantity');
             $table->decimal('price', 12, 0);
             $table->timestamps();

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Import;
 use App\Models\ImportDetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 class ImportController extends Controller
 {
@@ -39,29 +41,34 @@ class ImportController extends Controller
     {
         $total = 0;
         $count = 0;
-        foreach($request->cart as $item) {
-            $count += $item->count;
-            $total += $item->im_total;
+        foreach ($request->cart as $item) {
+            $count += $item['count'];
+            $total += $item['im_total'];
         }
-        $im = Import::create([
-            'code' => $request->code,
-            'supplier' => $request->supplier,
-            'note' => $request->note,
-            'product_count' => count($request->cart),
-            'quantity' => $count,
-            'total' => $total,
-            'user_id' => auth()->user()->id,
-        ]);
-        foreach($request->cart as $item) { 
-            ImportDetail::create([
-                'import_id' => $im->id,
-                'product_id' => $item->id,
-                'product_name' => $item->name,
-                'dvt' => $item->dvt,
-                'manufacturer' => $item->manufacturer,
-                'quantity' => $item->count,
-                'price' => $item->im_price,
+        try {
+            $im = Import::create([
+                'code' => $request->code,
+                'supplier' => $request->supplier,
+                'note' => $request->note,
+                'product_count' => count($request->cart),
+                'quantity' => $count,
+                'total' => $total,
+                'user_id' => Auth::user()->id,
             ]);
+            foreach ($request->cart as $item) {
+                ImportDetail::create([
+                    'import_id' => $im->id,
+                    'product_id' => $item['id'],
+                    'product_name' => $item['name'],
+                    'dvt' => $item['dvt'],
+                    'manufacturer' => $item['manufacturer'],
+                    'quantity' => $item['count'],
+                    'price' => $item['im_price'],
+                ]);
+            }
+            return ['status' => 1];
+        } catch (Throwable $e) {
+            return ['status' => 0];
         }
     }
 
