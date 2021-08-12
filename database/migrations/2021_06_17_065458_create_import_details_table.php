@@ -18,7 +18,6 @@ class CreateImportDetailsTable extends Migration
             $table->unsignedBigInteger('import_id')->unsigned();
             $table->foreign('import_id')->references('id')->on('imports');
             $table->unsignedBigInteger('product_id')->unsigned();
-            $table->foreign('product_id')->references('id')->on('products');
             $table->string('product_name');
             $table->string('dvt');
             $table->string('manufacturer')->nullable();

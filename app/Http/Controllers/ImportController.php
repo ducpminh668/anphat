@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Import;
 use App\Models\ImportDetail;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Throwable;
@@ -64,6 +65,13 @@ class ImportController extends Controller
                     'manufacturer' => $item['manufacturer'],
                     'quantity' => $item['count'],
                     'price' => $item['im_price'],
+                ]);
+                $product = Product::findOrFail($item['id']);
+                // get average of  cost_price
+                $costPrice = ($product->quantity * $product->cost_price + $item['count'] * $item['im_price'])/ ($product->quantity+ $item['count']);
+                $product->update([
+                    'quantity' => $product->quantity + $item['count'],
+                    'cost_price' => $costPrice
                 ]);
             }
             return ['status' => 1];
