@@ -36,7 +36,7 @@
                         <!-- <span class="form-text text-warning">Here goes your name</span> -->
                     </div>
                 </div>
-                <div class="form-group row"><label class="col-md-2 col-form-label">Giá bán</label>
+                <div class="form-group row"><label class="col-md-2 col-form-label">Giá bán lẻ</label>
                     <div class="col-md-10">
                         <input name="sell_price" id="sell_price" type="text" placeholder="Giá bán" class="form-control" required value="{{$product->sell_price}}">
                         @error('sell_price')

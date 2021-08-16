@@ -88,8 +88,8 @@
                      <a href="#" class="nav-link"><i class="icon-users2"></i> <span>Khách hàng</span></a>
 
                      <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                         <li class="nav-item"><a href="index.html" class="nav-link">Danh sách khách hàng</a></li>
-                         <li class="nav-item"><a href="index.html" class="nav-link">Thêm khách hàng</a></li>
+                         <li class="nav-item"><a href="/customers" class="nav-link">Danh sách khách hàng</a></li>
+                         <li class="nav-item"><a href="/customers/create" class="nav-link">Thêm khách hàng</a></li>
 
                      </ul>
                  </li>
@@ -97,8 +97,8 @@
                      <a href="#" class="nav-link"><i class="icon-insert-template"></i> <span>Đơn hàng</span></a>
 
                      <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                         <li class="nav-item"><a href="index.html" class="nav-link">Danh sách đơn hàng</a></li>
-                         <li class="nav-item"><a href="index.html" class="nav-link">Thêm khách hàng</a></li>
+                         <li class="nav-item"><a href="/orders" class="nav-link">Danh sách đơn hàng</a></li>
+                         <li class="nav-item"><a href="/orders/create" class="nav-link">Thêm đơn hàng</a></li>
 
                      </ul>
                  </li>
@@ -111,6 +111,9 @@
                          <li class="nav-item"><a href="index.html" class="nav-link">Báo cáo doanh thu</a></li>
 
                      </ul>
+                 </li>
+                 <li class="nav-item">
+                     <a href="/product-list" class="nav-link"><i class="icon-cart4"></i><span>Mua hàng</span></a>
                  </li>
 
                
