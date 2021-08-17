@@ -32,4 +32,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('customers', 'CustomerController');
 
     Route::get('/product-list', 'ClientController@listProduct');
+
+    Route::get('products/{id}/price-set', 'ProductController@priceSet');
 });

@@ -21,6 +21,8 @@ class CreateCustomersTable extends Migration
             $table->longText('note')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('group_id')->unsigned();
+            $table->foreign('group_id')->references('id')->on('customer_groups');
             $table->timestamps();
         });
     }

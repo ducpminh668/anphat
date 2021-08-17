@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             \LaratrustSeeder::class,
             \CategorySeeder::class,
-            // \ProductSeeder::class,
+            \ProductSeeder::class,
             // \ProductImageSeeder::class,
             \CustomerSeeder::class,
             \SupplierSeeder::class,

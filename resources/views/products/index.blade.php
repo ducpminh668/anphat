@@ -58,6 +58,7 @@
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" x-placement="top-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(22px, 0px, 0px);">
+                                    <a href="/products/{{$item->id}}/price-set" class="dropdown-item"><i class="icon-price-tag"></i> Cấu hình giá</a>
                                     <a href="/products/{{$item->id}}/edit" class="dropdown-item"><i class="icon-pencil"></i> Sửa sản phẩm</a>
                                     <a href="" class="dropdown-item text-danger delete-product"><i class="icon-trash"></i> Xóa sản phẩm</a>
                                     <!-- <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a> -->

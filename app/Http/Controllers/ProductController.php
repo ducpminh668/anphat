@@ -151,4 +151,10 @@ class ProductController extends Controller
         Product::find($id)->delete();
         return redirect()->route('products.index');
     }
+
+    public function priceSet($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('products.priceset')->with('product', $product);
+    }
 }

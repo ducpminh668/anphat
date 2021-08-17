@@ -15,10 +15,12 @@ class ProductSeeder extends Seeder
         Product::create([
             'name' => 'Vòi xịt vệ sinh',
             'barcode' => '8KYUM83d',
-            'thumbnail' => '/storage/uploads/4.jpg',
-            'quantity' => 100,
-            'cost_price' => 30000,
-            'sell_price' => 120000
+            'manufacturer' => 'Việt Nam',
+            'thumbnail' => '/storage/uploads/182530546_2450165001795654_7361982886996531706_n.jpg',
+            'quantity' => 0,
+            'cost_price' => 0,
+            'sell_price' => 120000,
+            'category_id' => 1
         ]);
     }
 }
