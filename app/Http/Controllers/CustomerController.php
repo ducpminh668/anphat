@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\CustomerGroup;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::with('user')->paginate(20);
+        $customers = Customer::with('group')->paginate(20);
 
         return view('customers.index')->withCustomers($customers);
     }
@@ -27,8 +28,8 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        return view('customers.create')->withUsers($users);
+        $groups = CustomerGroup::all();
+        return view('customers.create')->withGroups($groups);
     }
 
     /**
@@ -43,15 +44,23 @@ class CustomerController extends Controller
             'name' => 'required',
             'phone' => 'required',
             'address' => 'required',
-            'user_id' => 'required',
+            'email' => 'required|unique:users'
         ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->phone)
+        ]);
+        $user->attachRole('customer');
 
         Customer::create([
             'name' => $request->name,
             'phone' => $request->phone,
             'address' => $request->address,
             'note' => $request->note,
-            'user_id' => $request->user_id,
+            'group_id' => $request->group_id,
+            'user_id' => $user->id
         ]);
         return redirect()->route('customers.index');
     }

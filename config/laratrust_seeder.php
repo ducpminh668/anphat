@@ -24,7 +24,7 @@ return [
         'user' => [
             'profile' => 'r,u',
         ],
-        'role_name' => [
+        'customer' => [
             'module_1_name' => 'c,r,u,d',
         ]
     ],

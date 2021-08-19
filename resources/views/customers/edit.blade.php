@@ -32,6 +32,14 @@
                         @enderror
                     </div>
                 </div>
+                <div class="form-group row"><label class="col-md-2 col-form-label">Email</label>
+                    <div class="col-md-10">
+                        <input name="email" id="email" type="text" placeholder="Email" class="form-control" required value="{{$customer->phone}}">
+                        @error('email')
+                        <span class="form-text text-warning">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
                 <div class="form-group row"><label class="col-md-2 col-form-label">Địa chỉ</label>
                     <div class="col-md-10">
                         <input name="address" id="address" type="text" placeholder="Địa chỉ" class="form-control" value="{{$customer->address}}">

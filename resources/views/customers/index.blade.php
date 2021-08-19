@@ -27,7 +27,7 @@
                     <th>Tên khách hàng</th>
                     <th>Số điện thoại</th>
                     <th>Địa chỉ</th>
-                    <th>Người quản lý</th>
+                    <th>Nhóm khách hàng</th>
                     <th>Ghi chú</th>
                     <th class="text-center" style="width: 30px;"><i class="icon-menu-open2"></i></th>
                 </tr>
@@ -41,7 +41,7 @@
                     </td>
                     <td>{{$item->phone}}</td>
                     <td>{{$item->address}}</td>
-                    <td>{{$item->user->name}}</td>
+                    <td>{{$item->group->name}}</td>
                     <td>{{$item->note}}</td>
                     <td class="text-center">
                         <div class="list-icons">

@@ -39,6 +39,14 @@
                         @enderror
                     </div>
                 </div>
+                <div class="form-group row"><label class="col-md-2 col-form-label">Email</label>
+                    <div class="col-md-10">
+                        <input name="email" id="email" type="text" placeholder="Email" class="form-control" required>
+                        @error('email')
+                        <span class="form-text text-warning">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
                 <div class="form-group row"><label class="col-md-2 col-form-label">Ghi chú</label>
                     <div class="col-md-10">
                         <textarea name="note" rows="5" class="form-control"></textarea>
@@ -47,14 +55,14 @@
                         @enderror
                     </div>
                 </div>
-                <div class="form-group row"><label class="col-md-2 col-form-label">Nhân viên hỗ trợ</label>
+                <div class="form-group row"><label class="col-md-2 col-form-label">Nhóm khách hàng</label>
                     <div class="col-md-10">
-                        <select name="user_id" class="form-control select-search">
-                            @foreach($users as $user)
-                            <option value="{{$user->id}}" @if(auth()->user()->id == $user->id) selected @endif>{{$user->name}}</option>
+                        <select name="group_id" class="form-control select-search">
+                            @foreach($groups as $item)
+                            <option value="{{$item->id}}" >{{$item->name}}</option>
                             @endforeach
                         </select>
-                        @error('user_id')
+                        @error('group_id')
                         <span class="form-text text-warning">{{ $message }}</span>
                         @enderror
                     </div>
