@@ -34,4 +34,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/product-list', 'ClientController@listProduct');
 
     Route::get('products/{id}/price-set', 'ProductController@priceSet');
+    Route::post('products/{id}/price-set', 'ProductController@postPrice');
 });

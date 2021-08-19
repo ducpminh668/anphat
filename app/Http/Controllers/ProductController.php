@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CustomerGroup;
 use App\Models\Product;
+use App\Models\ProductPrice;
+use App\Models\ProductPriceCustomer;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use App\Repositories\Product\ProductRepository;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -154,7 +157,51 @@ class ProductController extends Controller
 
     public function priceSet($id)
     {
+        // $configPrice = DB::table('customer_groups')
+        //     ->join('product_price_customers', 'product_price_customers.group_id', '=', 'customer_groups.id')
+        //     ->join('product_price_customers', 'product_price_customers.group_id', '=', 'customer_groups.id')
+        //     ->get();
+
+        $configPrice = DB::table('product_prices')
+            ->where('product_id', $id)
+            ->join('product_price_customers', 'product_price_customers.product_price_id', '=', 'product_prices.id')
+            ->join('customer_groups', 'customer_groups.id', '=', 'product_price_customers.group_id')
+            ->get();
+
         $product = Product::findOrFail($id);
-        return view('products.priceset')->with('product', $product);
+        $groups = CustomerGroup::all();
+        return view('products.priceset')
+            ->with('product', $product)
+            ->with('configPrice', $configPrice)
+            ->with('groups', $groups);
+    }
+
+    public function postPrice(Request $request, $id)
+    {
+        $request->validate([
+            "prices"    => "required|array|min:1",
+            "prices.*"  => "required|numeric|distinct",
+            "groups"    => "required|array|min:1",
+            "groups.*"  => "required|numeric|distinct",
+        ]);
+
+        $product = Product::findOrFail($id);
+
+        $ids = ProductPrice::where('product_id', $id)->pluck('id');
+        ProductPriceCustomer::whereIn('product_price_id', $ids)->delete();
+        ProductPrice::whereIn('id', $ids)->delete();
+        
+        foreach ($request->prices as $index => $price) {
+            $pPrice = ProductPrice::create([
+                'product_id' => $product->id,
+                'price' => $price
+            ]);
+            ProductPriceCustomer::create([
+                'product_price_id' => $pPrice->id,
+                'group_id' => $request->groups[$index]
+            ]);
+        }
+
+        return redirect()->route('products.index');
     }
 }

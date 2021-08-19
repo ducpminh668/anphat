@@ -17,8 +17,8 @@ class CreateProductPriceCustomersTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('product_price_id')->unsigned();
             $table->foreign('product_price_id')->references('id')->on('product_prices');
-            $table->unsignedBigInteger('customer_id')->unsigned();
-            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->unsignedBigInteger('group_id')->unsigned();
+            $table->foreign('group_id')->references('id')->on('customer_groups');
             $table->timestamps();
         });
     }
