@@ -19,8 +19,8 @@ class CreateOrdersTable extends Migration
             $table->string('phone');
             $table->integer('status')->default(0);
             $table->string('contact_name');
-            $table->unsignedBigInteger('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('user_id')->unsigned()->nullable();
+            // $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('customer_id')->unsigned();
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->decimal('total', 12, 0);

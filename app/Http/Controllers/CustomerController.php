@@ -50,6 +50,7 @@ class CustomerController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone' => $request->phone,
             'password' => bcrypt($request->phone)
         ]);
         $user->attachRole('customer');

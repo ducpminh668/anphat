@@ -11,11 +11,11 @@
         @foreach($products as $product)
         <div class="card card-body">
             <div class="media align-items-center align-items-lg-start text-center text-lg-left flex-column flex-lg-row">
-                <div class="mr-lg-3 mb-3 mb-lg-0">
+                <!-- <div class="mr-lg-3 mb-3 mb-lg-0">
                     <a href="../../../../global_assets/images/placeholders/placeholder.jpg" data-popup="lightbox">
                         <img src="../../../../global_assets/images/placeholders/placeholder.jpg" width="96" alt="">
                     </a>
-                </div>
+                </div> -->
 
                 <div class="media-body">
                     <h6 class="media-title font-weight-semibold">
@@ -29,14 +29,16 @@
 
                     <img src="{{asset($product->thumbnail)}}" height="80" alt="">
 
-                   
+
                 </div>
 
                 <div class="mt-3 mt-lg-0 ml-lg-3 text-center">
                     @if($product->group_id)
                     <h3 class="mb-0 font-weight-semibold">{{number_format($product->price, 0, '', ',')}}</h3>
+                    <button type="button" class="btn bg-teal-400 mt-3" onclick="addToCart('{{$product->pid}}', '{{$product->price}}', '{{asset($product->thumbnail)}}', '{{$product->name}}')"><i class="icon-cart-add mr-2"></i> Thêm giỏ hàng</button>
                     @else
                     <h3 class="mb-0 font-weight-semibold">{{number_format($product->sell_price, 0, '', ',')}}</h3>
+                    <button type="button" class="btn bg-teal-400 mt-3" onclick="addToCart('{{$product->pid}}', '{{$product->sell_price}}', '{{asset($product->thumbnail)}}','{{$product->name}}')"><i class="icon-cart-add mr-2"></i> Thêm giỏ hàng</button>
                     @endif
                     <!-- <div>
                         <i class="icon-star-full2 font-size-base text-warning-300"></i>
@@ -47,8 +49,6 @@
                     </div> -->
 
                     <!-- <div class="text-muted">85 reviews</div> -->
-
-                    <button type="button" class="btn bg-teal-400 mt-3"><i class="icon-cart-add mr-2"></i> Add to cart</button>
                 </div>
             </div>
         </div>
@@ -117,5 +117,37 @@
     <!-- /right sidebar component -->
 
 </div>
+
+<script>
+    function addToCart(id, price, thumbnail, name) {
+        cart = JSON.parse(localStorage.getItem('cart')) ?? {
+            items: [],
+            total: 0,
+            quantity: 0
+        };
+        price = parseInt(price);
+
+        let item = cart.items.find(item => item.id == id);
+        if (item) {
+            item.quantity += 1
+            item.rowtotal += price
+        } else {
+            cart.items.push({
+                id,
+                price,
+                quantity: 1,
+                thumbnail,
+                name,
+                rowtotal: price
+            })
+        }
+        cart.quantity += 1;
+        cart.total += price;
+
+
+        localStorage.setItem('cart', JSON.stringify(cart))
+        renderCart()
+    }
+</script>
 
 @stop

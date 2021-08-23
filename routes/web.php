@@ -35,4 +35,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('products/{id}/price-set', 'ProductController@priceSet');
     Route::post('products/{id}/price-set', 'ProductController@postPrice');
+
+    Route::post('/submitCart', 'ClientController@submitCart');
+    Route::get('/cart', 'ClientController@showCart');
 });

@@ -38,6 +38,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
     <!-- /theme JS files -->
+    <!-- axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- /axios -->
 
 </head>
 
@@ -46,7 +49,7 @@
     <!-- Main navbar -->
     <div class="navbar navbar-expand-md navbar-dark">
         <div class="navbar-brand" style="display:flex;align-items:center;padding: 0">
-            <a href="index.html" class="d-inline-block">
+            <a href="/home" class="d-inline-block">
                 <img src="/images/logo.jpg" alt="" style="height: 36px;">
             </a>
         </div>
@@ -77,6 +80,60 @@
 
             <ul class="navbar-nav">
 
+                <!-- giỏ hàng -->
+                <li class="nav-item dropdown">
+                    <a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
+                        <i class="icon-bag"></i>
+                        <span class="d-md-none ml-2">Giỏ hàng</span>
+                        <span class="badge badge-pill bg-warning-400 ml-auto ml-md-0" id="cart-count">2</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-content wmin-md-350 cart_parent">
+                        <div class="dropdown-content-header">
+                            <span class="font-weight-semibold">Giỏ hàng</span>
+                        </div>
+
+                        <div class="dropdown-content-body dropdown-scrollable">
+                            <ul class="media-list cart-box">
+                                <!-- <li class="media">
+                                    <div class="mr-3 position-relative">
+                                        <img src="http://anphat.test/storage/uploads/182530546_2450165001795654_7361982886996531706_n.jpg" height="80" alt="">
+                                    </div>
+
+                                    <div class="media-body">
+                                        <div class="media-title">
+                                            <a href="#">
+                                                <span class="font-weight-semibold">James Alexander</span>
+                                                <span class="text-muted float-right font-size-sm">04:58</span>
+                                            </a>
+                                        </div>
+
+                                        <span class="text-muted">who knows, maybe that would be the best thing for me...</span>
+                                        <div class="input-group bootstrap-touchspin">
+                                            <span class="input-group-prepend">
+                                                <button class="btn btn-light bootstrap-touchspin-down" type="button">–</button>
+                                            </span>
+                                            <input type="text" value="55" class="form-control touchspin-postfix" style="display: block;flex:inherit; width:50px">
+                                            <span class="input-group-append">
+                                                <button class="btn btn-light bootstrap-touchspin-up" type="button">+</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li> -->
+
+                            </ul>
+                        </div>
+
+                        <div class="dropdown-content-footer justify-content-center p-0" style="flex-direction:column;">
+                            <div style="margin-top:5px">
+                                <strong>Tổng tiền: </strong><strong class="cartbox-total"></strong>
+                            </div>
+                            <a href="/cart" class="btn btn-primary" style="margin:7px 0;">Đi đến giỏ hàng</a>
+                        </div>
+                    </div>
+
+                </li>
+                <!-- end giỏ hàng -->
+                <!-- notification -->
                 <li class="nav-item dropdown">
                     <a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
                         <i class="icon-bell3"></i>
@@ -181,6 +238,7 @@
                         </div> -->
                     </div>
                 </li>
+                <!-- end notification -->
 
                 <li class="nav-item dropdown dropdown-user">
                     <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown">
@@ -303,7 +361,112 @@
 
     </div>
     <!-- /page content -->
+    <script>
+        function renderCart() {
+            let cart = JSON.parse(localStorage.getItem('cart'));
+            if (cart && cart.items.length > 0) {
+                let content = '';
+                cart.items.map(item => {
+                    content += `
+                                                <li class="media">
+                                                    <div class="mr-3 position-relative">
+                                                        <img src="${item.thumbnail}" height="80" alt="">
+                                                    </div>
 
+                                                    <div class="media-body">
+                                                        <div class="media-title">
+                                                            <a href="#">
+                                                                <span class="font-weight-semibold">${item.name}</span>
+                                                                <span class="text-muted float-right font-size-sm">${formatCash(item.rowtotal.toString())}
+                                                                
+                                                                </span>
+                                                                
+                                                            </a>
+                                                        </div>
+                                                        <div class="text-right">
+                                                        <a href="javascript:void(0)" class="text-danger" onclick="removeItem(event, '${item.id}')">Xóa</a>
+                                                        </div>
+                                                        <div class="input-group bootstrap-touchspin">
+                                                            <span class="input-group-prepend">
+                                                                <button class="btn btn-light bootstrap-touchspin-down" type="button" onclick="decreaseItem('${item.id}')">–</button>
+                                                            </span>
+                                                            <input type="text" value="${item.quantity}" class="form-control touchspin-postfix" style="display: block;flex:inherit; width:50px">
+                                                            <span class="input-group-append">
+                                                                <button class="btn btn-light bootstrap-touchspin-up" type="button" onclick="increaseItem('${item.id}')">+</button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                `
+                });
+                $('.cart-box').html(content);
+                $('.cartbox-total').html(formatCash(cart.total.toString()))
+                $('#cart-count').text(cart.quantity)
+            } else {
+                $('.cart-box').html(`
+                <li class="media">
+                                                    <div>
+                                                        Chưa có sản phẩm nào trong giỏ hàng
+                                                    </div>
+                                                </li>
+                                            `);
+                $('#cart-count').text('')
+                $('.cartbox-total').html(0)
+            }
+        }
+        renderCart()
+
+        function formatCash(str) {
+            return str.split('').reverse().reduce((prev, next, index) => {
+                return ((index % 3) ? next : (next + ',')) + prev
+            })
+        }
+
+        function removeItem(e, id) {
+            e.preventDefault()
+            let cart = JSON.parse(localStorage.getItem('cart'));
+            if (cart && cart.items.length > 0) {
+                let item = cart.items.find(item => item.id == id);
+                cart.quantity -= item.quantity;
+                cart.total -= item.rowtotal
+                let index = cart.items.findIndex(item => item.id == id);
+                cart.items.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                renderCart()
+                $('.cart_parent').dropdown('toggle');
+            }
+        }
+
+        function decreaseItem(id) {
+            let cart = JSON.parse(localStorage.getItem('cart'));
+            if (cart && cart.items.length > 0) {
+                let item = cart.items.find(item => item.id == id);
+                if (item.quantity > 0) {
+                    cart.quantity -= 1;
+                    cart.total -= item.price
+                    item.quantity -= 1;
+                    item.rowtotal -= item.price
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    renderCart()
+                }
+                $('.cart_parent').dropdown('toggle');
+            }
+        }
+
+        function increaseItem(id) {
+            let cart = JSON.parse(localStorage.getItem('cart'));
+            if (cart && cart.items.length > 0) {
+                let item = cart.items.find(item => item.id == id);
+                cart.quantity += 1;
+                cart.total += item.price
+                item.quantity += 1;
+                item.rowtotal += item.price
+                localStorage.setItem('cart', JSON.stringify(cart));
+                renderCart()
+                $('.cart_parent').dropdown('toggle');
+            }
+        }
+    </script>
 </body>
 
 </html>
