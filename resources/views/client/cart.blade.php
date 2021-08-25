@@ -22,8 +22,8 @@
                     <label class="col-md-2 col-form-label">Tên khách hàng</label>
                     <div class="col-md-10">
                         <input name="name" id="name" type="text" placeholder="Tên khách hàng" value="{{auth()->user()->name}}" class="form-control" required="">
-                        @if(property_exists(auth()->user(), 'customer'))
-                        <input name="customer_id" id="customer_id" type="text" placeholder="Tên khách hàng" value="{{auth()->user()->customer->id}}" class="form-control" required="">
+                        @if(auth()->user()->customer)
+                        <input name="customer_id" id="customer_id" type="hidden" value="{{auth()->user()->customer->id}}" class="form-control" required="">
                         @endif
                     </div>
                 </div>
@@ -38,10 +38,10 @@
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">Địa chỉ</label>
                     <div class="col-md-10">
-                        @if(property_exists(auth()->user(), 'customer'))
-                        <input name="address" id="address" type="text" placeholder="Số điện thoại" value="{{auth()->user()->customer->address}}" class="form-control">
+                        @if(auth()->user()->customer)
+                        <input name="address" id="address" type="text" placeholder="Địa chỉ" value="{{auth()->user()->customer->address}}" class="form-control">
                         @else
-                        <input name="address" id="address" type="text" placeholder="Số điện thoại" value="" class="form-control">
+                        <input name="address" id="address" type="text" placeholder="Địa chỉ" value="" class="form-control">
                         @endif
                     </div>
                 </div>

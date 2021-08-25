@@ -38,4 +38,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/submitCart', 'ClientController@submitCart');
     Route::get('/cart', 'ClientController@showCart');
+    Route::get('/orderSuccess', 'ClientController@orderSuccess');
+
+    Route::resource('orders', 'OrderController');
+    Route::get('/invoice/{id}', 'OrderController@invoice');
 });

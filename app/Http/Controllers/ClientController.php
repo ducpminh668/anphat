@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -37,19 +38,38 @@ class ClientController extends Controller
         ]);
 
         $cart = json_decode($request->cart);
+        $lastedID = Order::latest('id')->first() ? Order::latest('id')->first()->id : 0;
         $order = Order::create([
             'address' => $request->address,
             'phone' => $request->phone,
             'status' => 0,
             'contact_name' => $request->name,
             'total' => $cart->total,
-            'customer_id' => $request->customer_id
+            'customer_id' => $request->customer_id,
+            'note' => $request->note,
+            'order_id' => date("ymdH") . ($lastedID + 1)
         ]);
-        return redirect()->back();
+
+        foreach ($cart->items as $item) {
+            OrderDetail::create([
+                'order_id' => $order->id,
+                'product_name' => $item->name,
+                'price' => $item->price,
+                'rowtotal' => $item->rowtotal,
+                'quantity' => $item->quantity
+            ]);
+        }
+
+        return redirect('/orderSuccess');
     }
 
     public function showCart()
     {
         return view('client.cart');
+    }
+
+    public function orderSuccess()
+    {
+        return view('client.orderSuccess')->with('removeCart', 1);
     }
 }

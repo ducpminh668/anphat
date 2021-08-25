@@ -441,11 +441,18 @@
             let cart = JSON.parse(localStorage.getItem('cart'));
             if (cart && cart.items.length > 0) {
                 let item = cart.items.find(item => item.id == id);
-                if (item.quantity > 0) {
+                if (item.quantity > 1) {
                     cart.quantity -= 1;
-                    cart.total -= item.price
+                    cart.total -= item.price;
                     item.quantity -= 1;
-                    item.rowtotal -= item.price
+                    item.rowtotal -= item.price;
+                    localStorage.setItem('cart', JSON.stringify(cart));
+                    renderCart()
+                } else if (item.quantity == 1) {
+                    cart.quantity -= 1;
+                    cart.total -= item.price;
+                    let index = cart.items.findIndex(item => item.id == id);
+                    cart.items.splice(index, 1);
                     localStorage.setItem('cart', JSON.stringify(cart));
                     renderCart()
                 }

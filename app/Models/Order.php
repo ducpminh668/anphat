@@ -10,10 +10,10 @@ class Order extends Model
     use Filterable;
 
     protected $filterable = [
-        'start_date', 'end_date', 'phone', 'status', 'contact_name', 'user_id'
+        'start_date', 'end_date', 'phone', 'status', 'contact_name', 'user_id',
     ];
 
-    protected $fillable = ['phone', 'address', 'status', 'contact_name', 'user_id', 'customer_id', 'total'];
+    protected $fillable = ['phone', 'address', 'status', 'contact_name', 'user_id', 'customer_id', 'total', 'note', 'order_id'];
 
     public function details()
     {
