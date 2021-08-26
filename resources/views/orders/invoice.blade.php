@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="card">
+<div class="card" id="printBox">
     <div class="card-header bg-transparent header-elements-inline">
         <h6 class="card-title">ĐƠN ĐẶT HÀNG</h6>
         <div class="header-elements">
             <!-- <button type="button" class="btn btn-light btn-sm"><i class="icon-file-check mr-2"></i> Save</button> -->
-            <button type="button" class="btn btn-light btn-sm ml-3"><i class="icon-printer mr-2"></i> IN ĐƠN HÀNG</button>
+            <button type="button" class="btn btn-light btn-sm ml-3" id="btnPrint"><i class="icon-printer mr-2"></i> IN ĐƠN HÀNG</button>
         </div>
     </div>
 
@@ -149,4 +149,27 @@
         <span class="text-muted">Cảm ơn bạn đã tin tưởng và ủng hộ sản phẩm của chúng tôi</span>
     </div>
 </div>
+
+<script>
+    function printData() {
+        var divToPrint = document.getElementById("printBox");
+        newWin = window.open("");
+        newWin.document.write(` <!-- Global stylesheets -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
+    <link href="/admin/global_assets/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
+    <link href="/admin/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="/admin/css/bootstrap_limitless.min.css" rel="stylesheet" type="text/css">
+    <link href="/admin/css/layout.min.css" rel="stylesheet" type="text/css">
+    <link href="/admin/css/components.min.css" rel="stylesheet" type="text/css">
+    <link href="/admin/css/colors.min.css" rel="stylesheet" type="text/css">
+    <!-- /global stylesheets -->`);
+        newWin.document.write(divToPrint.outerHTML);
+        newWin.print();
+        newWin.close();
+    }
+
+    $('#btnPrint').on('click', function() {
+        printData();
+    })
+</script>
 @stop
