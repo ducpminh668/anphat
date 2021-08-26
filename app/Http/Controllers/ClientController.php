@@ -47,7 +47,9 @@ class ClientController extends Controller
             'total' => $cart->total,
             'customer_id' => $request->customer_id,
             'note' => $request->note,
-            'order_id' => date("ymdH") . ($lastedID + 1)
+            'order_id' => date("ymdH") . ($lastedID + 1),
+            'tax' => $cart->total / 10,
+            'total_due' => $cart->total * 110 / 100,
         ]);
 
         foreach ($cart->items as $item) {

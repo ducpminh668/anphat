@@ -13,7 +13,7 @@ class Order extends Model
         'start_date', 'end_date', 'phone', 'status', 'contact_name', 'user_id',
     ];
 
-    protected $fillable = ['phone', 'address', 'status', 'contact_name', 'user_id', 'customer_id', 'total', 'note', 'order_id'];
+    protected $fillable = ['phone', 'address', 'status', 'contact_name', 'user_id', 'customer_id', 'total', 'note', 'order_id', 'tax', 'total_due'];
 
     public function details()
     {

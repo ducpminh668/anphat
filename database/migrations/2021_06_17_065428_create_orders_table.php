@@ -26,6 +26,8 @@ class CreateOrdersTable extends Migration
             $table->foreign('customer_id')->references('id')->on('customers');
             $table->decimal('total', 12, 0);
             $table->longText('note')->nullable();
+            $table->decimal('tax', 12, 0);
+            $table->decimal('total_due', 12, 0);
             $table->timestamps();
         });
     }

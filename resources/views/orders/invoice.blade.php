@@ -65,7 +65,7 @@
 
                     <ul class="list list-unstyled text-right mb-0 ml-auto">
                         <li>
-                            <h5 class="font-weight-semibold my-2">{{$order->total}}</h5>
+                            <h5 class="font-weight-semibold my-2">{{number_format($order->total_due, 0, '', ',')}}</h5>
                         </li>
                         <li><span class="font-weight-semibold">Ngân hàng thương mại cổ phần Vietcombank</span></li>
                         <li>Nguyễn Đức Cảnh - TP Thái Bình</li>
@@ -97,8 +97,8 @@
                     </td>
                     <td>{{$item->quantity}}</td>
                     <td>Hộp</td>
-                    <td>{{$item->price}}</td>
-                    <td><span class="font-weight-semibold">{{$item->rowtotal}}</span></td>
+                    <td>{{number_format($item->price, 0, '', ',')}}</td>
+                    <td><span class="font-weight-semibold">{{number_format($item->rowtotal, 0, '', ',')}}</span></td>
                 </tr>
                 @endforeach
             </tbody>
@@ -122,16 +122,16 @@
                         <tbody>
                             <tr>
                                 <th>Tổng cộng:</th>
-                                <td class="text-right">{{$order->total}}</td>
+                                <td class="text-right">{{number_format($order->total, 0, '', ',')}}</td>
                             </tr>
                             <tr>
                                 <th>Thuế VAT: <span class="font-weight-normal">(10%)</span></th>
-                                <td class="text-right">$1,750</td>
+                                <td class="text-right">{{number_format($order->tax, 0, '', ',')}}</td>
                             </tr>
                             <tr>
                                 <th>Số tiền phải trả:</th>
                                 <td class="text-right text-primary">
-                                    <h5 class="font-weight-semibold">$8,750</h5>
+                                    <h5 class="font-weight-semibold">{{number_format($order->total_due, 0, '', ',')}}</h5>
                                 </td>
                             </tr>
                         </tbody>

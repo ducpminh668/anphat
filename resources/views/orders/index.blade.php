@@ -44,7 +44,7 @@
                         </td>
                         <td>{{$item->phone}}</td>
                         <td>{{$item->address}}</td>
-                        <td>{{$item->total}}</td>
+                        <td>{{number_format($item->total_due, 0, '', ',')}}</td>
                         <td>{{$item->note}}</td>
                         <td><span class="badge badge-warning">Chờ xử lý</span></td>
                         <td class="text-center">
