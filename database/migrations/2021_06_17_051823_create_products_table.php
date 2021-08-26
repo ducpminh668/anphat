@@ -20,11 +20,13 @@ class CreateProductsTable extends Migration
             $table->foreign('category_id')->references('id')->on('categories');
             $table->string('dvt')->nullable()->default('chiếc');
             $table->string('manufacturer')->nullable();
-            $table->text('barcode')->nullable();
+            $table->string('barcode')->nullable();
+            $table->string('short_desc')->nullable();
             $table->longText('thumbnail');
             $table->integer('quantity')->unsigned()->default(0);
             $table->decimal('cost_price', 12, 0)->nullable()->default(0);
             $table->decimal('sell_price', 12, 0);
+            $table->integer('count_per_box')->nullable();
             $table->timestamps();
         });
     }

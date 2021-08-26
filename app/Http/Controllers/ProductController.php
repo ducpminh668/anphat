@@ -62,12 +62,15 @@ class ProductController extends Controller
             $this->product->create([
                 'name' => $request->name,
                 'category_id' => 1,
-                'manufacturer' => $request->manufacturer,
+                'short_desc' => $request->short_desc,
                 'barcode' => $request->barcode,
                 'quantity' => 0,
                 'cost_price' => $request->cost_price ?? 0,
                 'sell_price' => $request->sell_price,
                 'thumbnail' => '/storage/' . $path,
+                'count_per_box' => $request->count_per_box,
+                'dvt' => $request->dvt,
+                'count_per_box' => $request->count_per_box,
             ]);
         } catch (\Exception $e) {
             return abort(500, 'Something went wrong');
@@ -124,17 +127,21 @@ class ProductController extends Controller
                 $path = $request->file('thumbnail')->storeAs('uploads', $imageName, 'public');
                 $product->update([
                     'name' => $request->name,
-                    'manufacturer' => $request->manufacturer,
+                    'short_desc' => $request->short_desc,
                     'barcode' => $request->barcode,
                     'sell_price' => $request->sell_price,
                     'thumbnail' => '/storage/' . $path,
+                    'dvt' => $request->dvt,
+                    'count_per_box' => $request->count_per_box,
                 ]);
             } else {
                 $product->update([
                     'name' => $request->name,
-                    'manufacturer' => $request->manufacturer,
+                    'short_desc' => $request->short_desc,
                     'barcode' => $request->barcode,
                     'sell_price' => $request->sell_price,
+                    'dvt' => $request->dvt,
+                    'count_per_box' => $request->count_per_box,
                 ]);
             }
         } catch (\Exception $e) {

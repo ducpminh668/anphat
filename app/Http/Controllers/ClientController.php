@@ -50,6 +50,7 @@ class ClientController extends Controller
             'order_id' => date("ymdH") . ($lastedID + 1),
             'tax' => $cart->total / 10,
             'total_due' => $cart->total * 110 / 100,
+            'user_id' => Auth::user()->id
         ]);
 
         foreach ($cart->items as $item) {

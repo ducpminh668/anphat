@@ -15,10 +15,10 @@ class CustomerSeeder extends Seeder
     {
 
         CustomerGroup::create([
-            'name' => 'Khách lẻ'
+            'name' => 'Nhà phân phối'
         ]);
         CustomerGroup::create([
-            'name' => 'Đại lý câp 1'
+            'name' => 'Đại lý cấp 1'
         ]);
         CustomerGroup::create([
             'name' => 'Đại lý câp 2'

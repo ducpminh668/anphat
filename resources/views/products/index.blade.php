@@ -25,13 +25,14 @@
                 <tr>
                     <th>ID</th>
                     <th>Tên sản phẩm</th>
-                    <th>Mã Barcode</th>
+                    <th>Mã hàng</th>
+                    <th>Quy cách</th>
                     <th>Đơn vị tính</th>
-                    <th>Nơi sản xuất</th>
                     <th>Ảnh sản phẩm</th>
                     <th>Tồn kho</th>
                     <th>Giá vốn</th>
-                    <th>Giá bán</th>
+                    <th>Giá niêm yết</th>
+                    <th>Số lượng/thùng</th>
                     <th class="text-center" style="width: 30px;"><i class="icon-menu-open2"></i></th>
                 </tr>
             </thead>
@@ -43,13 +44,13 @@
                         {{$item->name}}
                     </td>
                     <td>{{$item->barcode}}</td>
+                    <td>{{$item->short_desc}}</td>
                     <td>{{$item->dvt}}</td>
-                    <td>{{$item->manufacturer}}</td>
                     <td><img src="{{asset($item->thumbnail)}}" alt="" width="64" height="auto"></td>
                     <td>{{$item->quantity}}</td>
                     <td>{{number_format($item->cost_price, 0, '', ',')}}</td>
                     <td>{{number_format($item->sell_price, 0, '', ',')}}</td>
-
+                    <td>{{$item->count_per_box}}</td>
                     <td class="text-center">
                         <div class="list-icons">
                             <div class="dropdown">

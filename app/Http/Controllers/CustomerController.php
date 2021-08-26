@@ -114,6 +114,12 @@ class CustomerController extends Controller
             'note' => $request->note,
             'user_id' => $request->user_id,
         ]);
+        $user = User::where('id', $request->user_id)->first();
+        $user->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+        ]);
         return redirect()->route('customers.index');
     }
 
