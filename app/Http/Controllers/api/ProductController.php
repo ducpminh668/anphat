@@ -139,6 +139,9 @@ class ProductController extends Controller
                 'cost_price' => $request->cost_price ?? 0,
                 'sell_price' => $request->sell_price,
                 'thumbnail' => '/storage/' . $path,
+                'dvt' => $request->dvt,
+                'count_per_box' => $request->count_per_box,
+                'short_desc' => $request->short_desc,
             ]);
         } catch (\Exception $e) {
             return ['status' => 0, 'message' => $e->getMessage()];

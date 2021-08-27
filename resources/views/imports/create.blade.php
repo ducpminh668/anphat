@@ -112,21 +112,38 @@
                                     <!-- <span class="form-text text-muted">Here goes your name</span> -->
                                 </div>
                             </div>
-                            <div class="form-group row"><label class="col-md-3 col-form-label">Nơi sản xuất</label>
+                           
+                            <div class="form-group row"><label class="col-md-3 col-form-label">Mã hàng</label>
                                 <div class="col-md-9">
-                                    <input name="manufacturer" id="manufacturer" type="text" placeholder="Nơi sản xuất" class="form-control">
+                                    <input name="barcode" id="barcode" type="text" placeholder="Mã hàng" class="form-control">
                                     <!-- <span class="form-text text-muted">Here goes your name</span> -->
                                 </div>
                             </div>
-                            <div class="form-group row"><label class="col-md-3 col-form-label">Mã Barcode</label>
+
+                            <div class="form-group row"><label class="col-md-3 col-form-label">Quy cách</label>
                                 <div class="col-md-9">
-                                    <input name="barcode" id="barcode" type="text" placeholder="Mã barcode" class="form-control">
+                                    <input name="short_desc" id="short_desc" type="text" placeholder="Quy cách" class="form-control">
                                     <!-- <span class="form-text text-muted">Here goes your name</span> -->
                                 </div>
                             </div>
-                            <div class="form-group row"><label class="col-md-3 col-form-label">Giá bán</label>
+
+                            <div class="form-group row"><label class="col-md-3 col-form-label">Đơn vị tính</label>
                                 <div class="col-md-9">
-                                    <input name="sell_price" id="sell_price" type="text" placeholder="Giá bán" class="form-control">
+                                    <input name="dvt" id="dvt" type="text" placeholder="Đơn vị tính" class="form-control">
+                                    <!-- <span class="form-text text-muted">Here goes your name</span> -->
+                                </div>
+                            </div>
+
+                            <div class="form-group row"><label class="col-md-3 col-form-label">Số lượng/thùng</label>
+                                <div class="col-md-9">
+                                    <input name="count_per_box" id="count_per_box" type="text" placeholder="Số lượng/thùng" class="form-control">
+                                    <!-- <span class="form-text text-muted">Here goes your name</span> -->
+                                </div>
+                            </div>
+
+                            <div class="form-group row"><label class="col-md-3 col-form-label">Giá niêm yết</label>
+                                <div class="col-md-9">
+                                    <input name="sell_price" id="sell_price" type="text" placeholder="Giá niêm yết" class="form-control">
                                     <!-- <span class="form-text text-muted">Here goes your name</span> -->
                                 </div>
                             </div>
@@ -222,11 +239,11 @@
         }
         if (!item) {
             cart.push(data);
-            renderCart()
+            renderTableImport()
         }
     });
 
-    function renderCart() {
+    function renderTableImport() {
         let content = ''
         console.log(cart)
         cart.map((item, index) => {
@@ -259,7 +276,7 @@
         item.im_price = parseInt($(this).val())
         item.im_total = item.im_price * item.count
         $('.box').html('')
-        renderCart()
+        renderTableImport()
     })
 
     $(document).on('change', '.im_count', function() {
@@ -268,7 +285,7 @@
         item.count = parseInt($(this).val())
         item.im_total = item.im_price * item.count
         $('.box').html('')
-        renderCart()
+        renderTableImport()
     })
     $('#sell_price').mask("#,##0", {
         reverse: true
@@ -276,28 +293,33 @@
 
     function submitProduct() {
         let name = $('#product_name').val()
-        let manufacturer = $('#manufacturer').val()
+        let short_desc = $('#short_desc').val()
         let barcode = $('#barcode').val()
         let sell_price = $('#sell_price').val().replaceAll(",", "")
         let thumbnail = $('#thumbnail')[0].files[0]
+        let count_per_box = $('#count_per_box').val()
+        let dvt = $('#dvt').val()
 
         let data = new FormData();
         data.append('name', name);
-        data.append('manufacturer', manufacturer);
+        data.append('short_desc', short_desc);
         data.append('barcode', barcode);
         data.append('sell_price', sell_price);
         data.append('thumbnail', thumbnail);
+        data.append('count_per_box', count_per_box);
+        data.append('dvt', dvt);
 
         if (name && parseInt(sell_price) && thumbnail && barcode) {
             $('#modal_addProduct').modal('hide');
             axios.post('/api/products', data).then(res => {
                 if (res.data.status == 1) {
                     $('#product_name').val('')
-                    $('#manufacturer').val('')
+                    $('#short_desc').val('')
                     $('#sell_price').val('')
                     $('#sell_price').val('')
                     $('#thumbnail').val(null)
-
+                    $('#count_per_box').val('')
+                    $('#dvt').val('')
                 }
             }).catch(err => {
                 alert(err.message)

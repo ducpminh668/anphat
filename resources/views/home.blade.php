@@ -6,8 +6,8 @@
         <div class="card card-body bg-blue-400 has-bg-image">
             <div class="media">
                 <div class="media-body">
-                    <h3 class="mb-0">54,390</h3>
-                    <span class="text-uppercase font-size-xs">Khách hàng mới</span>
+                    <h3 class="mb-0">{{$customer_count}}</h3>
+                    <span class="text-uppercase font-size-xs">Khách hàng</span>
                 </div>
 
                 <div class="ml-3 align-self-center">
@@ -21,7 +21,7 @@
         <div class="card card-body bg-danger-400 has-bg-image">
             <div class="media">
                 <div class="media-body">
-                    <h3 class="mb-0">389,438</h3>
+                    <h3 class="mb-0">{{$order_count}}</h3>
                     <span class="text-uppercase font-size-xs">Đơn hàng trong tháng</span>
                 </div>
 
@@ -40,7 +40,7 @@
                 </div>
 
                 <div class="media-body text-right">
-                    <h3 class="mb-0">652,549</h3>
+                    <h3 class="mb-0">{{$total}}</h3>
                     <span class="text-uppercase font-size-xs">Doanh thu tháng</span>
                 </div>
             </div>
@@ -56,7 +56,7 @@
 
                 <div class="media-body text-right">
                     <h3 class="mb-0">245,382</h3>
-                    <span class="text-uppercase font-size-xs">Lợi nhuận ròng</span>
+                    <span class="text-uppercase font-size-xs">Lợi nhuận gộp</span>
                 </div>
             </div>
         </div>
