@@ -98,7 +98,7 @@
 
                      <ul class="nav nav-group-sub" data-submenu-title="Layouts">
                          <li class="nav-item"><a href="/orders" class="nav-link">Danh sách đơn hàng</a></li>
-                         <li class="nav-item"><a href="/orders/create" class="nav-link">Thêm đơn hàng</a></li>
+                         <!-- <li class="nav-item"><a href="/orders/create" class="nav-link">Thêm đơn hàng</a></li> -->
 
                      </ul>
                  </li>

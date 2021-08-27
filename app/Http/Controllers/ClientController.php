@@ -14,7 +14,6 @@ class ClientController extends Controller
     {
         if (Auth::user()->customer) {
             $products = DB::table('products')
-
                 ->leftJoin('product_prices', 'product_prices.product_id', '=', 'products.id')
                 ->leftJoin('product_price_customers', 'product_price_customers.product_price_id', '=', 'product_prices.id')
                 ->whereNull('group_id')
