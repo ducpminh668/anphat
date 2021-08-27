@@ -56,7 +56,7 @@
 
                 <div class="media-body text-right">
                     <h3 class="mb-0">245,382</h3>
-                    <span class="text-uppercase font-size-xs">Lợi nhuận gộp</span>
+                    <span class="text-uppercase font-size-xs">Lợi nhuận tháng</span>
                 </div>
             </div>
         </div>
