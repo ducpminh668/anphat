@@ -42,4 +42,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::resource('orders', 'OrderController');
     Route::get('/invoice/{id}', 'OrderController@invoice');
+
+    Route::get('/quantityReport', 'ReportController@quantityReport');
+    Route::get('/revenueReport', 'ReportController@revenueReport');
 });

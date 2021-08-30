@@ -20,6 +20,8 @@ class CreateOrderDetailsTable extends Migration
             $table->string('product_name');
             $table->decimal('price', 12, 0);
             $table->decimal('rowtotal', 12, 0);
+            $table->decimal('cost_price', 12, 0);
+            $table->integer('product_id');
             $table->integer('quantity');
             $table->timestamps();
         });

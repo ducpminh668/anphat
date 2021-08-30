@@ -98,7 +98,7 @@
 
                      <ul class="nav nav-group-sub" data-submenu-title="Layouts">
                          <li class="nav-item"><a href="/orders" class="nav-link">Danh sách đơn hàng</a></li>
-                         <!-- <li class="nav-item"><a href="/orders/create" class="nav-link">Thêm đơn hàng</a></li> -->
+                         <li class="nav-item"><a href="/orders/create" class="nav-link">Tạo đơn hàng</a></li>
 
                      </ul>
                  </li>
@@ -106,9 +106,9 @@
                      <a href="#" class="nav-link"><i class="icon-pie-chart5"></i> <span>Báo cáo</span></a>
 
                      <ul class="nav nav-group-sub" data-submenu-title="Layouts">
-                         <li class="nav-item"><a href="index.html" class="nav-link">Báo cáo tồn kho</a></li>
-                         <li class="nav-item"><a href="index.html" class="nav-link">Báo cáo đơn hàng bán</a></li>
-                         <li class="nav-item"><a href="index.html" class="nav-link">Báo cáo doanh thu</a></li>
+                         <li class="nav-item"><a href="/quantityReport" class="nav-link">Báo cáo tồn kho</a></li>
+                         <!-- <li class="nav-item"><a href="index.html" class="nav-link">Báo cáo đơn hàng bán</a></li> -->
+                         <li class="nav-item"><a href="/revenueReport" class="nav-link">Báo cáo doanh thu</a></li>
 
                      </ul>
                  </li>

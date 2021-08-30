@@ -24,7 +24,8 @@
 
                     <ul class="list-inline list-inline-dotted mb-3 mb-lg-2">
                         <li class="list-inline-item"><a href="#" class="text-muted">{{$product->barcode}}</a></li>
-                        <li class="list-inline-item"><a href="#" class="text-muted">{{$product->manufacturer}}</a></li>
+                        <li class="list-inline-item"><a href="#" class="text-muted">{{$product->short_desc}}</a></li>
+                        <li class="list-inline-item"><a href="#" class="text-muted">Tồn: {{$product->quantity}}</a></li>
                     </ul>
 
                     <img src="{{asset($product->thumbnail)}}" height="80" alt="">
@@ -35,10 +36,10 @@
                 <div class="mt-3 mt-lg-0 ml-lg-3 text-center">
                     @if($product->group_id)
                     <h3 class="mb-0 font-weight-semibold">{{number_format($product->price, 0, '', ',')}}</h3>
-                    <button type="button" class="btn bg-teal-400 mt-3" onclick="addToCart('{{$product->pid}}', '{{$product->price}}', '{{asset($product->thumbnail)}}', '{{$product->name}}')"><i class="icon-cart-add mr-2"></i> Thêm giỏ hàng</button>
+                    <button type="button" class="btn bg-teal-400 mt-3" onclick="addToCart('{{$product->pid}}', '{{$product->price}}', '{{asset($product->thumbnail)}}', '{{$product->name}}', '{{$product->cost_price}}')"><i class="icon-cart-add mr-2"></i> Thêm giỏ hàng</button>
                     @else
                     <h3 class="mb-0 font-weight-semibold">{{number_format($product->sell_price, 0, '', ',')}}</h3>
-                    <button type="button" class="btn bg-teal-400 mt-3" onclick="addToCart('{{$product->pid}}', '{{$product->sell_price}}', '{{asset($product->thumbnail)}}','{{$product->name}}')"><i class="icon-cart-add mr-2"></i> Thêm giỏ hàng</button>
+                    <button type="button" class="btn bg-teal-400 mt-3" onclick="addToCart('{{$product->pid}}', '{{$product->sell_price}}', '{{asset($product->thumbnail)}}','{{$product->name}}', '{{$product->cost_price}}')"><i class="icon-cart-add mr-2"></i> Thêm giỏ hàng</button>
                     @endif
                     <!-- <div>
                         <i class="icon-star-full2 font-size-base text-warning-300"></i>
@@ -119,7 +120,7 @@
 </div>
 
 <script>
-    function addToCart(id, price, thumbnail, name) {
+    function addToCart(id, price, thumbnail, name, cost_price) {
         cart = JSON.parse(localStorage.getItem('cart')) ?? {
             items: [],
             total: 0,
@@ -138,7 +139,9 @@
                 quantity: 1,
                 thumbnail,
                 name,
-                rowtotal: price
+                rowtotal: price,
+                cost_price,
+                product_id: id
             })
         }
         cart.quantity += 1;

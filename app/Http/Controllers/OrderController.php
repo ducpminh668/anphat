@@ -18,4 +18,14 @@ class OrderController extends Controller
         $order = Order::with('details')->findOrFail($id);
         return view('orders.invoice')->withOrder($order);
     }
+
+    public function edit()
+    {
+        return 'adsf';
+    }
+
+    public function create()
+    {
+        return view('orders.create');
+    }
 }

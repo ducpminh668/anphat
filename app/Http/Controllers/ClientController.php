@@ -59,7 +59,9 @@ class ClientController extends Controller
                 'product_name' => $item->name,
                 'price' => $item->price,
                 'rowtotal' => $item->rowtotal,
-                'quantity' => $item->quantity
+                'quantity' => $item->quantity,
+                'cost_price' => $item->cost_price,
+                'product_id' => $item->product_id,
             ]);
         }
 

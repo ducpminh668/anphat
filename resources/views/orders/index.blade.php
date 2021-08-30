@@ -55,14 +55,8 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" x-placement="top-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(22px, 0px, 0px);">
-                                        <a href="/customers/{{$item->id}}/edit" class="dropdown-item"><i class="icon-pencil"></i> Sửa khách hàng</a>
-                                        <a href="" class="dropdown-item text-danger delete-customer"><i class="icon-trash"></i> Xóa khách hàng</a>
-                                        <!-- <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a> -->
-                                        <form method="POST" action="{{ route('customers.destroy', $item->id) }}" style="display: none;">
-                                            @csrf
-                                            <input name="_method" type="hidden" value="DELETE">
-                                            <button type="submit" class="btn btn-xs btn-danger btn-flat show_confirm" data-toggle="tooltip" title='Delete'> <i class="fa fa-trash"> </i></button>
-                                        </form>
+                                        <a href="/orders/{{$item->id}}/edit" class="dropdown-item"><i class="icon-pencil"></i> Sửa đơn hàng</a>
+                                        <a href="/orders/{{$item->id}}/cancel" class="dropdown-item"><i class="icon-diff-removed"></i> Hủy đơn hàng</a>
                                     </div>
                                 </div>
                             </div>
