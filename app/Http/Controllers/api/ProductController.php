@@ -262,4 +262,11 @@ class ProductController extends Controller
 
         return ['status' => 0, 'message' => 'Not found'];
     }
+
+    public function getCustomers(Request $request)
+    {
+        return \App\Models\Customer::with('user')->where('name', 'like', '%' . $request->name . '%')
+            ->orWhere('phone', 'like', '%' . $request->name . '%')
+            ->paginate(30);
+    }
 }

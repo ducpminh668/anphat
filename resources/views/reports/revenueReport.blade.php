@@ -39,7 +39,7 @@
                         <td>{{$item->contact_name}}</td>
                         <td>{{$item->phone}}</td>
                         <td>{{$item->created_at}}</td>
-                        <td>{{$item->total_due}}</td>
+                        <td>{{number_format($item->total_due, 0, '', ',')}}</td>
                     </tr>
                     @endforeach
                 </tbody>

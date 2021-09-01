@@ -53,4 +53,5 @@ Route::resource('roles', 'api\RoleController');
 Route::resource('permissions', 'api\PermissionController');
 
 Route::get('products', 'api\ProductController@index');
+Route::get('getcustomers', 'api\ProductController@getCustomers');
 Route::post('imports', 'ImportController@store');
