@@ -129,7 +129,7 @@
 
     // Format selection
     function formatRepoSelection(repo) {
-        return repo.code || repo.name;
+        return repo.name;
     }
 </script>
 @stop
