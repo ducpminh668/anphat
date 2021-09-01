@@ -45,4 +45,6 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/quantityReport', 'ReportController@quantityReport');
     Route::get('/revenueReport', 'ReportController@revenueReport');
+
+    Route::get('/getProductByCustomer', 'ClientController@getProductByCustomer');
 });

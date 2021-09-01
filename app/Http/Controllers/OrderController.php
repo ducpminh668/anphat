@@ -27,8 +27,6 @@ class OrderController extends Controller
 
     public function create()
     {
-        $customers = Customer::with('user')->get();
-        return view('orders.create')
-            ->with('customers', $customers);
+        return view('orders.create');
     }
 }

@@ -17,8 +17,8 @@ class ClientController extends Controller
                 ->where('quantity', '>', 0)
                 ->leftJoin('product_prices', 'product_prices.product_id', '=', 'products.id')
                 ->leftJoin('product_price_customers', 'product_price_customers.product_price_id', '=', 'product_prices.id')
-                ->whereNull('group_id')
-                ->orWhere('group_id', Auth::user()->customer->group_id)
+                ->where('group_id', Auth::user()->customer->group_id)
+                ->orWhereNull('group_id')
                 ->select('products.*', 'product_prices.*', 'product_price_customers.*', 'products.id as pid')
                 ->paginate(10);
             return view('client.listProduct')->withProducts($products);
@@ -76,5 +76,21 @@ class ClientController extends Controller
     public function orderSuccess()
     {
         return view('client.orderSuccess')->with('removeCart', 1);
+    }
+
+    public function getProductByCustomer(Request $request)
+    {
+        $group_id = $request->group_id;
+        return DB::table('products')
+            ->where('quantity', '>', 0)
+            ->leftJoin('product_prices', 'product_prices.product_id', '=', 'products.id')
+            ->leftJoin('product_price_customers', 'product_price_customers.product_price_id', '=', 'product_prices.id')
+            ->where('products.name', 'like', '%' . $request->name . '%')
+            ->where(function ($q) use ($group_id) {
+                $q->where('group_id', $group_id)
+                    ->orWhereNull('group_id');
+            })
+            ->select('products.*', 'product_prices.*', 'product_price_customers.*', 'products.id as pid')
+            ->paginate(10);
     }
 }
