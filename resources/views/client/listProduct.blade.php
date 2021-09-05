@@ -121,12 +121,12 @@
 
 <script>
     function addToCart(id, price, thumbnail, name, cost_price) {
-        cart = JSON.parse(localStorage.getItem('cart')) ?? {
+        let cart = JSON.parse(localStorage.getItem('cart')) ?? {
             items: [],
             total: 0,
             quantity: 0
         };
-        price = parseInt(price);
+        let price = parseInt(price);
 
         let item = cart.items.find(item => item.id == id);
         if (item) {

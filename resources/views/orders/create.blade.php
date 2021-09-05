@@ -1,15 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="card">
-    <div class="card-header header-elements-inline">
-        <h5 class="card-title">Tạo đơn hàng</h5>
+<form action="/orders" method="post" onsubmit="return checkAdminCart()">
+    @csrf
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">Tạo đơn hàng</h5>
 
-    </div>
+        </div>
 
-    <div class="card-body">
-        <form action="/customers" method="post">
-            @csrf
+        <div class="card-body">
+
             <fieldset class="mb-3">
                 <!-- <legend class="text-uppercase font-size-sm font-weight-bold">Basic inputs</legend> -->
 
@@ -20,8 +21,9 @@
                             <option value="">Chọn khách hàng</option>
                         </select>
                         <input name="contact_name" id="contact_name" type="hidden" class="form-control">
-                        <input name="email" id="email" type="hidden" placeholder="Email" class="form-control" required>
+                        <input name="email" id="email" type="hidden" class="form-control" required>
                         <input name="customer_id" id="customer_id" type="hidden" class="form-control" required>
+                        <input type="hidden" name="cart" id="cart-field">
                         <style>
                             .select2-selection--single {
                                 height: 37px;
@@ -71,25 +73,40 @@
 
             </fieldset>
 
-
-
-            <!-- <div class="text-right">
-                <button type="submit" class="btn btn-primary">Tạo mới</button>
-            </div> -->
-        </form>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-header header-elements-inline">
-        <h5 class="card-title">Danh sách sản phẩm</h5>
-    </div>
-    <div class="card-body">
-        <div class="max-height:400px;overflow:auto">
-
         </div>
     </div>
-</div>
+
+    <div class="card">
+        <div class="card-header header-elements-inline">
+            <h5 class="card-title">Danh sách sản phẩm</h5>
+        </div>
+        <div class="card-body">
+            <div class="max-height:400px;overflow:auto">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên hàng</th>
+                                <th>Mã hàng</th>
+                                <th>Quy cách</th>
+                                <th>Giá bán</th>
+                                <th>Số lượng</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody class="cart-table">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-primary">Tạo đơn hàng</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
 
 <script>
     $('.select-remote-data').select2({
@@ -181,6 +198,14 @@
         templateSelection: formatRepoSelection4 // omitted for brevity, see the source of this page
     });
 
+    function checkAdminCart() {
+        let cart = JSON.parse(localStorage.getItem('cartAdmin'));
+        if (cart && cart.items.length > 0) {
+            $('#cart-field').val(JSON.stringify(cart));
+            return true;
+        }
+        return false
+    }
 
     function formatRepo4(repo) {
         if (repo.loading) return repo.name;
@@ -205,10 +230,91 @@
         $('#contact_name').val(data.name);
         $('#phone').val(data.phone);
         $('#address').val(data.address);
+        $('#email').val(data.user.email);
+        $('#customer_id').val(data.id);
     });
     $('.query-product').on('select2:select', function(e) {
         var data = e.params.data;
-        console.log(data);
+        let price = parseInt(data.group_id ? data.price : data.sell_price)
+        let cartAdmin = JSON.parse(localStorage.getItem('cartAdmin')) ?? {
+            items: [],
+            total: 0,
+            quantity: 0
+        };
+
+        let item = cartAdmin.items.find(item => item.id == data.id);
+        if (item) {
+            item.quantity += 1
+            item.rowtotal += price
+        } else {
+            cartAdmin.items.push({
+                id: data.id,
+                price,
+                quantity: 1,
+                thumbnail: data.thumbnail,
+                name: data.name,
+                rowtotal: price,
+                cost_price: data.cost_price,
+                product_id: data.pid,
+                barcode: data.barcode,
+                short_desc: data.short_desc
+            })
+        }
+        cartAdmin.quantity += 1;
+        cartAdmin.total += price;
+
+
+        localStorage.setItem('cartAdmin', JSON.stringify(cartAdmin))
+        renderAdminCart()
     });
+
+    function renderAdminCart() {
+        let cart = JSON.parse(localStorage.getItem('cartAdmin'));
+        if (cart && cart.items.length > 0) {
+            let content = ''
+            cart.items.map((item, index) => {
+                content += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${item.name}</td>
+                    <td>${item.barcode}</td>
+                    <td>${item.short_desc}</td>
+                    <td>${formatCash(item.price.toString())}</td>
+                    <td><input type="number" value='${item.quantity}' data-id='${item.id}' class="row-item" style="width: 50px;"/></td>
+                    <td>${formatCash(item.rowtotal.toString())}</td>
+                </tr>
+                `
+            })
+            content += `<tr>
+                <td colspan="7"><strong>Tổng tiền: ${formatCash(cart.total.toString())}</strong></td>
+            </tr>`;
+            $('.cart-table').html(content)
+        } else {
+            let content = `<tr>
+                <td colspan="7"><strong>Không có sản phẩm nào trong giỏ hàng</strong></td>
+            </tr>`;
+        }
+    }
+    renderAdminCart()
+
+    function formatCash(str) {
+        return str.split('').reverse().reduce((prev, next, index) => {
+            return ((index % 3) ? next : (next + ',')) + prev
+        })
+    }
+
+    $(document).on('change', '.row-item', function() {
+        let id = $(this).data('id');
+        let cart = JSON.parse(localStorage.getItem('cartAdmin'))
+        if (cart && cart.items && parseInt($(this).val()) > 0) {
+            let item = cart.items.find(item => item.id == id);
+            cart.quantity = cart.quantity - item.quantity + parseInt($(this).val())
+            cart.total = cart.total - item.rowtotal + parseInt($(this).val()) * item.price
+            item.quantity = parseInt($(this).val());
+            item.rowtotal = parseInt($(this).val()) * item.price;
+        }
+        localStorage.setItem('cartAdmin', JSON.stringify(cart))
+        renderAdminCart()
+    })
 </script>
 @stop

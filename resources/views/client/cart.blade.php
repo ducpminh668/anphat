@@ -96,6 +96,7 @@
                 <tr>
                     <td>${index + 1}</td>
                     <td>${item.name}</td>
+                    <td>${item.barcode}</td>
                     <td>${item.quantity}</td>
                     <td>${formatCash(item.price.toString())}</td>
                     <td>${formatCash(item.rowtotal.toString())}</td>
