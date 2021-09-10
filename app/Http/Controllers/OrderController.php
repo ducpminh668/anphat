@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -22,9 +23,18 @@ class OrderController extends Controller
         return view('orders.invoice')->withOrder($order);
     }
 
-    public function edit()
+    public function edit($id)
     {
-        return 'adsf';
+        // $order = Order::with('details')->findOrFail($id);
+        $order = DB::table('orders')
+            ->select('order_details.*', 'orders.*','order_details.quantity as qty', 'products.name', 'products.barcode', 'products.short_desc', 'orders.id as oid')
+            ->join('order_details', 'orders.id', 'order_details.order_id')
+            ->join('products', 'products.id', 'order_details.product_id')
+            ->where('orders.id', '=', $id)
+            ->get();
+
+        return view('orders.edit')
+            ->with('order', $order);
     }
 
     public function create()
@@ -71,5 +81,18 @@ class OrderController extends Controller
         }
 
         return redirect()->route('orders.index');
+    }
+
+    public function orderReturn($id)
+    {
+        $order = Order::with('details')->findOrFail($id);
+        return view('orders.orderReturn')
+            ->with('order', $order);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+        dd($request->all());
     }
 }

@@ -55,7 +55,7 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" x-placement="top-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(22px, 0px, 0px);">
-                                        <a href="/orders/{{$item->id}}/edit" class="dropdown-item"><i class="icon-pencil"></i> Sửa đơn hàng</a>
+                                        <!-- <a href="/orders/{{$item->id}}/edit" class="dropdown-item"><i class="icon-pencil"></i> Sửa đơn hàng</a> -->
                                         <a href="/orders/{{$item->id}}/edit" class="dropdown-item"><i class="icon-move-left"></i> Trả lại hàng</a>
                                         <a href="/orders/{{$item->id}}/cancel" class="dropdown-item"><i class="icon-diff-removed"></i> Hủy đơn hàng</a>
                                     </div>

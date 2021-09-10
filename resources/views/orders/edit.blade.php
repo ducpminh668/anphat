@@ -1,75 +1,42 @@
 @extends('layouts.app')
 
 @section('content')
-<form action="/orders" method="post" onsubmit="return checkAdminCart()">
+<form action="{{route('orders.update', $order->first()->id)}}" method="post" onsubmit="return checkAdminCart()">
     @csrf
+    @method('put')
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Tạo đơn hàng</h5>
-
+            <h5 class="card-title">Nhập trả lại đơn hàng: {{$order->first()->order_id}}</h5>
         </div>
 
         <div class="card-body">
 
             <fieldset class="mb-3">
                 <!-- <legend class="text-uppercase font-size-sm font-weight-bold">Basic inputs</legend> -->
-
+                <input type="hidden" name="order_id" value="{{$order->first()->oid}}">
+                <input type="hidden" name="cart" id="cart-field">
                 <div class="form-group row">
                     <label class="col-md-2 col-form-label">Tên khách hàng</label>
                     <div class="col-md-10">
-                        <select class="form-control select-remote-data" data-fouc style="min-height:37px">
-                            <option value="">Chọn khách hàng</option>
-                        </select>
-                        <input name="contact_name" id="contact_name" type="hidden" class="form-control">
-                        <input name="email" id="email" type="hidden" class="form-control" required>
-                        <input name="customer_id" id="customer_id" type="hidden" class="form-control" required>
-                        <input type="hidden" name="cart" id="cart-field">
-                        <style>
-                            .select2-selection--single {
-                                height: 37px;
-                            }
-                        </style>
-                        @error('name')
-                        <span class="form-text text-warning">{{ $message }}</span>
-                        @enderror
+                        <input name="contact_name" value="{{$order->first()->contact_name}}" type="text" class="form-control" readonly>
                     </div>
                 </div>
 
                 <div class="form-group row"><label class="col-md-2 col-form-label">Số điện thoại</label>
                     <div class="col-md-10">
-                        <input name="phone" id="phone" type="text" placeholder="Số điện thoại" class="form-control">
-                        @error('phone')
-                        <span class="form-text text-warning">{{ $message }}</span>
-                        @enderror
+                        <input name="phone" id="phone" type="text" placeholder="Số điện thoại" class="form-control" value="{{$order->first()->phone}}" readonly>
                     </div>
                 </div>
 
                 <div class="form-group row"><label class="col-md-2 col-form-label">Địa chỉ</label>
                     <div class="col-md-10">
-                        <input name="address" id="address" type="text" placeholder="Địa chỉ" class="form-control">
+                        <input name="address" id="address" type="text" placeholder="Địa chỉ" class="form-control" value="{{$order->first()->address}}" readonly>
                         @error('address')
                         <span class="form-text text-warning">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
 
-                <div class="form-group row"><label class="col-md-2 col-form-label">Ghi chú</label>
-                    <div class="col-md-10">
-                        <textarea name="note" rows="5" class="form-control"></textarea>
-                        @error('sell_price')
-                        <span class="form-text text-warning">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    <label class="col-md-2 col-form-label">Chọn sản phẩm</label>
-                    <div class="col-md-10">
-                        <select class="form-control query-product" data-fouc style="min-height:37px">
-                            <option value="">Chọn sản phẩm</option>
-                        </select>
-                    </div>
-                </div>
 
             </fieldset>
 
@@ -78,9 +45,12 @@
 
     <div class="card">
         <div class="card-header header-elements-inline">
-            <h5 class="card-title">Danh sách sản phẩm</h5>
+            <h5 class="card-title">Giỏ hàng</h5>
         </div>
         <div class="card-body">
+            <p class="text-danger">
+                Hướng dẫn nhập trả lại hàng: đối với đơn hàng mua 2 sản phẩm, trả 1 sản phẩm thì sửa số lượng thành 1. Nếu trả lại 2 sản phẩm thì sửa lại số lượng là 0.
+            </p>
             <div class="max-height:400px;overflow:auto">
                 <div class="table-responsive">
                     <table class="table">
@@ -101,7 +71,7 @@
                     </table>
                 </div>
                 <div class="text-right">
-                    <button type="submit" class="btn btn-primary">Tạo đơn hàng</button>
+                    <button type="submit" class="btn btn-primary">Hoàn thành</button>
                 </div>
             </div>
         </div>
@@ -199,10 +169,9 @@
     });
 
     function checkAdminCart() {
-        let cart = JSON.parse(localStorage.getItem('cartAdmin'));
+        let cart = JSON.parse(localStorage.getItem('editCart'));
         if (cart && cart.items.length > 0) {
             $('#cart-field').val(JSON.stringify(cart));
-            localStorage.removeItem('cartAdmin')
             return true;
         }
         return false
@@ -234,43 +203,35 @@
         $('#email').val(data.user.email);
         $('#customer_id').val(data.id);
     });
-    $('.query-product').on('select2:select', function(e) {
-        var data = e.params.data;
-        let price = parseInt(data.group_id ? data.price : data.sell_price)
-        let cartAdmin = JSON.parse(localStorage.getItem('cartAdmin')) ?? {
+
+    function initCart() {
+        var order = @json($order);
+        let cart = {
             items: [],
-            total: 0,
-            quantity: 0
-        };
-
-        let item = cartAdmin.items.find(item => item.id == data.id);
-        if (item) {
-            item.quantity += 1
-            item.rowtotal += price
-        } else {
-            cartAdmin.items.push({
-                id: data.id,
-                price,
-                quantity: 1,
-                thumbnail: data.thumbnail,
-                name: data.name,
-                rowtotal: price,
-                cost_price: data.cost_price,
-                product_id: data.pid,
-                barcode: data.barcode,
-                short_desc: data.short_desc
-            })
+            total: order[0].total,
+            quantity: order[0].quantity
         }
-        cartAdmin.quantity += 1;
-        cartAdmin.total += price;
 
-
-        localStorage.setItem('cartAdmin', JSON.stringify(cartAdmin))
-        renderAdminCart()
-    });
+        let maxqty = [];
+        order.map(item => {
+            cart.items.push({
+                id: item.product_id,
+                name: item.product_name,
+                price: item.price,
+                rowtotal: item.rowtotal,
+                cost_price: item.cost_price,
+                quantity: item.qty,
+                barcode: item.barcode,
+                short_desc: item.short_desc,
+            })
+            maxqty.push(item.qty);
+        })
+        localStorage.setItem('editCart', JSON.stringify(cart))
+        localStorage.setItem('maxqty', JSON.stringify(maxqty))
+    }
 
     function renderAdminCart() {
-        let cart = JSON.parse(localStorage.getItem('cartAdmin'));
+        let cart = JSON.parse(localStorage.getItem('editCart'));
         if (cart && cart.items.length > 0) {
             let content = ''
             cart.items.map((item, index) => {
@@ -281,7 +242,7 @@
                     <td>${item.barcode}</td>
                     <td>${item.short_desc}</td>
                     <td>${formatCash(item.price.toString())}</td>
-                    <td><input type="number" value='${item.quantity}' data-id='${item.id}' class="row-item" style="width: 50px;"/></td>
+                    <td><input type="number" value='${item.quantity}' data-index='${index}' data-id='${item.id}' class="row-item" style="width: 50px;"/></td>
                     <td>${formatCash(item.rowtotal.toString())}</td>
                 </tr>
                 `
@@ -296,6 +257,7 @@
             </tr>`;
         }
     }
+    initCart()
     renderAdminCart()
 
     function formatCash(str) {
@@ -306,7 +268,14 @@
 
     $(document).on('change', '.row-item', function() {
         let id = $(this).data('id');
-        let cart = JSON.parse(localStorage.getItem('cartAdmin'))
+        let maxqty = JSON.parse(localStorage.getItem('maxqty'));
+        let index = parseInt($(this).data('index'));
+
+        if($(this).val() > maxqty[index]) {
+            $(this).val(maxqty[index]);
+            return
+        }
+        let cart = JSON.parse(localStorage.getItem('editCart'))
         if (cart && cart.items && parseInt($(this).val()) > 0) {
             let item = cart.items.find(item => item.id == id);
             cart.quantity = cart.quantity - item.quantity + parseInt($(this).val())
@@ -314,7 +283,7 @@
             item.quantity = parseInt($(this).val());
             item.rowtotal = parseInt($(this).val()) * item.price;
         }
-        localStorage.setItem('cartAdmin', JSON.stringify(cart))
+        localStorage.setItem('editCart', JSON.stringify(cart))
         renderAdminCart()
     })
 </script>
