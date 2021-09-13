@@ -15,6 +15,7 @@ class CreateReturnOrdersTable extends Migration
     {
         Schema::create('return_orders', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('order_return_id');
             $table->unsignedBigInteger('order_id')->unsigned();
             $table->foreign('order_id')->references('id')->on('orders');
             $table->decimal('total', 12, 0);

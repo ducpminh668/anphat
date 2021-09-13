@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -62,6 +63,11 @@ class ClientController extends Controller
                 'quantity' => $item->quantity,
                 'cost_price' => $item->cost_price,
                 'product_id' => $item->product_id,
+            ]);
+
+            $product = Product::find($item->product_id);
+            $product->update([
+                'quantity' => $product->quantity - $item->quantity
             ]);
         }
 

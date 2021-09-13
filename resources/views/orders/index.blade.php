@@ -46,7 +46,15 @@
                         <td>{{$item->address}}</td>
                         <td>{{number_format($item->total_due, 0, '', ',')}}</td>
                         <td>{{$item->note}}</td>
-                        <td><span class="badge badge-warning">Chờ xử lý</span></td>
+                        <td>
+                            @if ( $item->status == 0)
+                            <span class="badge badge-warning">Chưa thanh toán</span>
+                            @elseif ( $item->status == 1)
+                            <span class="badge badge-success">Đã thanh toán</span>
+                            @elseif ( $item->status == 2)
+                            <span class="badge badge-danger">Hủy đơn hàng</span>
+                            @endif
+                        </td>
                         <td class="text-center">
                             <div class="list-icons">
                                 <div class="dropdown">
@@ -55,8 +63,8 @@
                                     </a>
 
                                     <div class="dropdown-menu dropdown-menu-right" x-placement="top-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(22px, 0px, 0px);">
-                                        <!-- <a href="/orders/{{$item->id}}/edit" class="dropdown-item"><i class="icon-pencil"></i> Sửa đơn hàng</a> -->
-                                        <a href="/orders/{{$item->id}}/edit" class="dropdown-item"><i class="icon-move-left"></i> Trả lại hàng</a>
+                                        <a href="/orders/{{$item->id}}/success" class="dropdown-item"><i class="icon-pencil"></i> Đã thanh toán</a>
+                                        <!-- <a href="/orders/{{$item->id}}/edit" class="dropdown-item"><i class="icon-move-left"></i> Trả lại hàng</a> -->
                                         <a href="/orders/{{$item->id}}/cancel" class="dropdown-item"><i class="icon-diff-removed"></i> Hủy đơn hàng</a>
                                     </div>
                                 </div>

@@ -41,6 +41,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/orderSuccess', 'ClientController@orderSuccess');
 
     Route::resource('orders', 'OrderController');
+    Route::get('/orders/{id}/success', 'OrderController@success');
+    Route::get('/orders/{id}/cancel', 'OrderController@cancel');
     Route::get('/invoice/{id}', 'OrderController@invoice');
 
     Route::get('/quantityReport', 'ReportController@quantityReport');

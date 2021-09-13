@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\Product;
+use App\Models\ReturnOrder;
+use App\Models\ReturnOrderDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +30,7 @@ class OrderController extends Controller
     {
         // $order = Order::with('details')->findOrFail($id);
         $order = DB::table('orders')
-            ->select('order_details.*', 'orders.*','order_details.quantity as qty', 'products.name', 'products.barcode', 'products.short_desc', 'orders.id as oid')
+            ->select('order_details.*', 'orders.*', 'order_details.quantity as qty', 'products.name', 'products.barcode', 'products.short_desc', 'orders.id as oid')
             ->join('order_details', 'orders.id', 'order_details.order_id')
             ->join('products', 'products.id', 'order_details.product_id')
             ->where('orders.id', '=', $id)
@@ -78,6 +81,10 @@ class OrderController extends Controller
                 'cost_price' => $item->cost_price,
                 'product_id' => $item->product_id,
             ]);
+            $product = Product::find($item->product_id);
+            $product->update([
+                'quantity' => $product->quantity - $item->quantity
+            ]);
         }
 
         return redirect()->route('orders.index');
@@ -93,6 +100,51 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         $order = Order::findOrFail($id);
-        dd($request->all());
+        $cart = json_decode($request->cart);
+
+        $order = ReturnOrder::create([
+            'order_id' => $order->id,
+            'order_return_id' => date("ymdH") . $order->id,
+            'total' => $cart->total,
+            'tax' => $cart->total * 10 / 100,
+            'total_due' => $cart->total * 110 / 100,
+        ]);
+        foreach ($cart->items as $item) {
+            ReturnOrderDetail::create([
+                'return_order_id' => $order->id,
+                'product_name' => $item->name,
+                'price' => $item->price,
+                'rowtotal' => $item->rowtotal,
+                'quantity' => $item->quantity,
+                'barcode' => $item->barcode,
+                'short_desc' => $item->short_desc,
+            ]);
+        }
+        return redirect()->route('orders.index');
+    }
+
+    public function success($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->update(['status' => 1]);
+        return redirect()->back();
+    }
+
+    public function cancel($id)
+    {
+        $order = Order::findOrFail($id);
+        foreach ($order->details as $item) {
+            $product = Product::find($item->product_id);
+            if ($product) {
+                $product->update([
+                    'cost_price' => ($product->quantity * $product->cost_price + $item->quantity * $item->cost_price) / ($product->quantity + $item->quantity),
+                    'quantity' => $product->quantity + $item->quantity
+                ]);
+            }
+        }
+        $order->update([
+            'status' => 2,
+        ]);
+        return redirect()->route('orders.index');
     }
 }
