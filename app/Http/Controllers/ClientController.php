@@ -63,6 +63,7 @@ class ClientController extends Controller
                 'quantity' => $item->quantity,
                 'cost_price' => $item->cost_price,
                 'product_id' => $item->product_id,
+                'barcode' => $item->barcode,
             ]);
 
             $product = Product::find($item->product_id);

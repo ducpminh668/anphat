@@ -12,19 +12,14 @@ return [
     'truncate_tables' => true,
 
     'roles_structure' => [
-        'superadministrator' => [
-            'users' => 'c,r,u,d',
-            'payments' => 'c,r,u,d',
-            'profile' => 'r,u'
-        ],
         'administrator' => [
             'users' => 'c,r,u,d',
             'profile' => 'r,u'
         ],
-        'user' => [
+        'customer' => [
             'profile' => 'r,u',
         ],
-        'customer' => [
+        'sale' => [
             'module_1_name' => 'c,r,u,d',
         ]
     ],

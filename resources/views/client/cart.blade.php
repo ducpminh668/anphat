@@ -59,6 +59,7 @@
                         <tr>
                             <th>STT</th>
                             <th>Tên sản phẩm</th>
+                            <th>Mã sản phẩm</th>
                             <th>Số lượng</th>
                             <th>Đơn giá</th>
                             <th>Thành tiền</th>
@@ -104,12 +105,12 @@
                 `
             })
             content += `<tr>
-                <td colspan="5"><strong>Tổng tiền: ${formatCash(cart.total.toString())}</strong></td>
+                <td colspan="6"><strong>Tổng tiền: ${formatCash(cart.total.toString())}</strong></td>
             </tr>`;
             $('.cart-table').html(content)
         } else {
             let content = `<tr>
-                <td colspan="5"><strong>Không có sản phẩm nào trong giỏ hàng</strong></td>
+                <td colspan="6"><strong>Không có sản phẩm nào trong giỏ hàng</strong></td>
             </tr>`;
         }
     }

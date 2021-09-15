@@ -49,6 +49,7 @@
                  <li class="nav-item-header">
                      <div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i>
                  </li>
+                 @role('administrator')
                  <li class="nav-item">
                      <a href="/home" class="nav-link">
                          <i class="icon-home4"></i>
@@ -93,14 +94,19 @@
 
                      </ul>
                  </li>
+                 @endrole
                  <li class="nav-item nav-item-submenu">
                      <a href="#" class="nav-link"><i class="icon-insert-template"></i> <span>Đơn hàng</span></a>
 
                      <ul class="nav nav-group-sub" data-submenu-title="Layouts">
+
                          <li class="nav-item"><a href="/orders" class="nav-link">Danh sách đơn hàng</a></li>
+                         @role('administrator|sale')
                          <li class="nav-item"><a href="/orders/create" class="nav-link">Tạo đơn hàng</a></li>
+                         @endrole
                      </ul>
                  </li>
+                 @role('administrator')
                  <li class="nav-item nav-item-submenu">
                      <a href="#" class="nav-link"><i class="icon-pie-chart5"></i> <span>Báo cáo</span></a>
 
@@ -112,13 +118,19 @@
                      </ul>
                  </li>
                  <li class="nav-item">
+                     <a href="/users" class="nav-link"><i class="icon-users"></i><span>Người dùng hệ thống</span></a>
+                 </li>
+                 @endrole
+                 @role('customer')
+                 <li class="nav-item">
                      <a href="/product-list" class="nav-link"><i class="icon-cart4"></i><span>Mua hàng</span></a>
                  </li>
+                 @endrole
 
-               
+
                  <!-- /main -->
 
-                
+
 
              </ul>
          </div>

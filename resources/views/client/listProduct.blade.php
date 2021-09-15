@@ -36,10 +36,10 @@
                 <div class="mt-3 mt-lg-0 ml-lg-3 text-center">
                     @if($product->group_id)
                     <h3 class="mb-0 font-weight-semibold">{{number_format($product->price, 0, '', ',')}}</h3>
-                    <button type="button" class="btn bg-teal-400 mt-3" onclick="addToCart('{{$product->pid}}', '{{$product->price}}', '{{asset($product->thumbnail)}}', '{{$product->name}}', '{{$product->cost_price}}', '{{$product->barcode}}', '{{$product->short_desc}}')"><i class="icon-cart-add mr-2"></i> Thêm giỏ hàng</button>
+                    <button type="button" class="btn bg-teal-400 mt-3" onclick="addToCart('{{$product->pid}}', '{{$product->price}}', '{{asset($product->thumbnail)}}', '{{$product->name}}', '{{$product->cost_price}}', '{{$product->barcode}}', `{{$product->short_desc}}`)"><i class="icon-cart-add mr-2"></i> Thêm giỏ hàng</button>
                     @else
                     <h3 class="mb-0 font-weight-semibold">{{number_format($product->sell_price, 0, '', ',')}}</h3>
-                    <button type="button" class="btn bg-teal-400 mt-3" onclick="addToCart('{{$product->pid}}', '{{$product->sell_price}}', '{{asset($product->thumbnail)}}','{{$product->name}}', '{{$product->cost_price}}', '{{$product->barcode}}', '{{$product->short_desc}}')"><i class="icon-cart-add mr-2"></i> Thêm giỏ hàng</button>
+                    <button type="button" class="btn bg-teal-400 mt-3" onclick="addToCart('{{$product->pid}}', '{{$product->sell_price}}', '{{asset($product->thumbnail)}}','{{$product->name}}', '{{$product->cost_price}}', '{{$product->barcode}}', `{{$product->short_desc}}`)"><i class="icon-cart-add mr-2"></i> Thêm giỏ hàng</button>
                     @endif
                     <!-- <div>
                         <i class="icon-star-full2 font-size-base text-warning-300"></i>
@@ -120,13 +120,13 @@
 </div>
 
 <script>
-    function addToCart(id, price, thumbnail, name, cost_price) {
+    function addToCart(id, price, thumbnail, name, cost_price, barcode, short_desc) {
         let cart = JSON.parse(localStorage.getItem('cart')) ?? {
             items: [],
             total: 0,
             quantity: 0
         };
-        let price = parseInt(price);
+        price = parseInt(price);
 
         let item = cart.items.find(item => item.id == id);
         if (item) {
@@ -141,7 +141,8 @@
                 name,
                 rowtotal: price,
                 cost_price,
-                product_id: id
+                product_id: id,
+                barcode: barcode
             })
         }
         cart.quantity += 1;

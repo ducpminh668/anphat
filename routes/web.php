@@ -24,30 +24,32 @@ Auth::routes();
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', 'HomeController@index')->name('home');
 
-    Route::get('/imports/index', 'ImportController@index');
-    Route::get('/imports/create', 'ImportController@create');
-    Route::post('/imports', 'ImportController@store');
+    Route::get('/imports/index', 'ImportController@index')->middleware(['role:administrator']);
+    Route::get('/imports/create', 'ImportController@create')->middleware(['role:administrator']);
+    Route::post('/imports', 'ImportController@store')->middleware(['role:administrator']);
 
-    Route::resource('products', 'ProductController');
-    Route::resource('customers', 'CustomerController');
+    Route::resource('products', 'ProductController')->middleware(['role:administrator']);
+    Route::resource('customers', 'CustomerController')->middleware(['role:administrator']);
 
-    Route::get('/product-list', 'ClientController@listProduct');
+    Route::get('/product-list', 'ClientController@listProduct')->middleware(['role:customer']);
 
-    Route::get('products/{id}/price-set', 'ProductController@priceSet');
-    Route::post('products/{id}/price-set', 'ProductController@postPrice');
+    Route::get('products/{id}/price-set', 'ProductController@priceSet')->middleware(['role:administrator']);
+    Route::post('products/{id}/price-set', 'ProductController@postPrice')->middleware(['role:administrator']);
 
-    Route::post('/submitCart', 'ClientController@submitCart');
-    Route::get('/cart', 'ClientController@showCart');
+    Route::post('/submitCart', 'ClientController@submitCart')->middleware(['role:customer']);
+    Route::get('/cart', 'ClientController@showCart')->middleware(['role:customer']);
     Route::get('/orderSuccess', 'ClientController@orderSuccess');
 
     Route::resource('orders', 'OrderController');
-    Route::get('/orders/{id}/success', 'OrderController@success');
-    Route::get('/orders/{id}/cancel', 'OrderController@cancel');
+    Route::get('/orders/{id}/success', 'OrderController@success')->middleware(['role:administrator']);
+    Route::get('/orders/{id}/cancel', 'OrderController@cancel')->middleware(['role:administrator']);
     Route::get('/invoice/{id}', 'OrderController@invoice');
 
-    Route::get('/quantityReport', 'ReportController@quantityReport');
-    Route::get('/revenueReport', 'ReportController@revenueReport');
+    Route::get('/quantityReport', 'ReportController@quantityReport')->middleware(['role:administrator']);
+    Route::get('/revenueReport', 'ReportController@revenueReport')->middleware(['role:administrator']);
 
     Route::get('/getProductByCustomer', 'ClientController@getProductByCustomer');
     Route::get('/orderReturn/{id}', 'OrderController@orderReturn');
+
+    Route::resource('users', 'UserController');
 });

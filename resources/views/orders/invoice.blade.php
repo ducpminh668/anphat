@@ -138,9 +138,9 @@
                     </table>
                 </div>
 
-                <div class="text-right mt-3">
+                <!-- <div class="text-right mt-3">
                     <button type="button" class="btn btn-primary btn-labeled btn-labeled-left"><b><i class="icon-paperplane"></i></b> Gửi hóa đơn qua email</button>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

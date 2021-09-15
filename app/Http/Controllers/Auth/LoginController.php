@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    // protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -44,5 +44,28 @@ class LoginController extends Controller
         Auth::logout();
 
         return redirect()->route('home');
+    }
+
+    protected function redirectTo()
+    {
+        if (auth()->user()->role == 'admin') {
+            return '/admin';
+        }
+        return '/admin';
+    }
+
+    public function authenticated()
+    {
+        $user = Auth::user();
+        $user = Auth::user();
+        if ($user->hasRole('administrator')) {
+            return redirect('/home');
+        } else if ($user->hasRole('customer')) {
+            return redirect('/product-list');
+        } else if ($user->hasRole('sale')) {
+            return redirect('/orders/create');
+        } else {
+            return redirect('/orders/create');
+        }
     }
 }
