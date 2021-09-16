@@ -43,7 +43,11 @@
                         <td>{{$item->name}}</td>
                         <td>{{$item->quantity}}</td>
                         <td>{{number_format($item->quantity * $item->cost_price, 0, '', ',')}}</td>
+                        @if($total != 0)
                         <td>{{($item->quantity * $item->cost_price) / $total * 100}} %</td>
+                        @else 
+                        <td>0</td>
+                        @endif
                     </tr>
                     @endforeach
                 </tbody>
