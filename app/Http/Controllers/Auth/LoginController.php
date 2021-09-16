@@ -57,7 +57,6 @@ class LoginController extends Controller
     public function authenticated()
     {
         $user = Auth::user();
-        $user = Auth::user();
         if ($user->hasRole('administrator')) {
             return redirect('/home');
         } else if ($user->hasRole('customer')) {

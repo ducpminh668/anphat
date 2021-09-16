@@ -93,6 +93,7 @@
                                 <th>Giá bán</th>
                                 <th>Số lượng</th>
                                 <th>Thành tiền</th>
+                                <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody class="cart-table">
@@ -258,7 +259,8 @@
                 cost_price: data.cost_price,
                 product_id: data.pid,
                 barcode: data.barcode,
-                short_desc: data.short_desc
+                short_desc: data.short_desc,
+                barcode: data.barcode
             })
         }
         cartAdmin.quantity += 1;
@@ -270,6 +272,7 @@
     });
 
     function renderAdminCart() {
+        $('.cart-table').html('');
         let cart = JSON.parse(localStorage.getItem('cartAdmin'));
         if (cart && cart.items.length > 0) {
             let content = ''
@@ -283,16 +286,17 @@
                     <td>${formatCash(item.price.toString())}</td>
                     <td><input type="number" value='${item.quantity}' data-id='${item.id}' class="row-item" style="width: 50px;"/></td>
                     <td>${formatCash(item.rowtotal.toString())}</td>
+                    <td><a href="#" data-id='${item.id}' class="remove-item text-danger">Remove</a></td>
                 </tr>
                 `
             })
             content += `<tr>
-                <td colspan="7"><strong>Tổng tiền: ${formatCash(cart.total.toString())}</strong></td>
+                <td colspan="8"><strong>Tổng tiền: ${formatCash(cart.total.toString())}</strong></td>
             </tr>`;
             $('.cart-table').html(content)
         } else {
             let content = `<tr>
-                <td colspan="7"><strong>Không có sản phẩm nào trong giỏ hàng</strong></td>
+                <td colspan="8"><strong>Không có sản phẩm nào trong giỏ hàng</strong></td>
             </tr>`;
         }
     }
@@ -316,6 +320,24 @@
         }
         localStorage.setItem('cartAdmin', JSON.stringify(cart))
         renderAdminCart()
+    })
+
+    $(document).on('click', '.remove-item', function(e) {
+        e.preventDefault()
+        let id = $(this).data('id')
+        let cart = JSON.parse(localStorage.getItem('cartAdmin'))
+        console.log(cart);
+        if (cart && cart.items) {
+            let item = cart.items.find(item => item.id == id);
+            if (item) {
+                cart.quantity -= item.quantity;
+                cart.total -= item.rowtotal
+                let index = cart.items.findIndex(item => item.id == id);
+                cart.items.splice(index, 1);
+                localStorage.setItem('cartAdmin', JSON.stringify(cart));
+                renderAdminCart()
+            }
+        }
     })
 </script>
 @stop

@@ -52,4 +52,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/orderReturn/{id}', 'OrderController@orderReturn');
 
     Route::resource('users', 'UserController');
+
+    Route::get('change-pass', 'UserController@changePass');
+    Route::post('post-change-pass', 'UserController@postChangePass');
 });

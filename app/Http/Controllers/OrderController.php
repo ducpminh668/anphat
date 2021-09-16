@@ -16,7 +16,16 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::with('details')->paginate(10);
+        $user = Auth::user();
+        $orders = null;
+        if($user->hasRole('administrator')) {
+            $orders = Order::with('details')->orderByDesc('created_at')->paginate(10);
+        } else if($user->hasRole('sale')) {
+            $orders = Order::with('details')->where('user_id', $user->id)->orderByDesc('created_at')->paginate(10);
+        } else if($user->hasRole('customer')) {
+            $orders = Order::with('details')->where('phone', $user->phone)->paginate(10);
+        }
+        
         return view('orders.index')->withOrders($orders);
     }
 
@@ -80,6 +89,7 @@ class OrderController extends Controller
                 'quantity' => $item->quantity,
                 'cost_price' => $item->cost_price,
                 'product_id' => $item->product_id,
+                'barcode' => $item->barcode
             ]);
             $product = Product::find($item->product_id);
             $product->update([
