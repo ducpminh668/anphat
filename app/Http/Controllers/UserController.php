@@ -27,7 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
+        $roles = Role::where('name', '<>', 'customer')->get();
         return view('users.create')->withRoles($roles);
     }
 
