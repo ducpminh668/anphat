@@ -85,9 +85,13 @@ class CustomerController extends Controller
      */
     public function edit($id)
     {
+        $groups = CustomerGroup::all();
         $customer = Customer::findOrFail($id);
         $users = User::all();
-        return view('customers.edit')->withCustomer($customer)->with('users', $users);
+        return view('customers.edit')
+            ->withCustomer($customer)
+            ->withGroups($groups)
+            ->with('users', $users);
     }
 
     /**
@@ -103,7 +107,7 @@ class CustomerController extends Controller
             'name' => 'required',
             'phone' => 'required',
             'address' => 'required',
-            'user_id' => 'required',
+            'group_id' => 'required',
         ]);
 
         $customer = Customer::findOrFail($id);
@@ -112,12 +116,11 @@ class CustomerController extends Controller
             'phone' => $request->phone,
             'address' => $request->address,
             'note' => $request->note,
-            'user_id' => $request->user_id,
+            'group_id' => $request->group_id,
         ]);
-        $user = User::where('id', $request->user_id)->first();
+        $user = User::where('id', $customer->user_id)->first();
         $user->update([
             'name' => $request->name,
-            'email' => $request->email,
             'phone' => $request->phone,
         ]);
         return redirect()->route('customers.index');
