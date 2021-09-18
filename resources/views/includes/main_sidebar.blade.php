@@ -85,6 +85,10 @@
 
                      </ul>
                  </li>
+
+                 @endrole
+
+                 @role('administrator|sale')
                  <li class="nav-item nav-item-submenu">
                      <a href="#" class="nav-link"><i class="icon-users2"></i> <span>Khách hàng</span></a>
 

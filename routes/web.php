@@ -29,7 +29,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/imports', 'ImportController@store')->middleware(['role:administrator']);
 
     Route::resource('products', 'ProductController')->middleware(['role:administrator']);
-    Route::resource('customers', 'CustomerController')->middleware(['role:administrator']);
+    Route::resource('customers', 'CustomerController')->middleware(['role:administrator|sale']);
 
     Route::get('/product-list', 'ClientController@listProduct')->middleware(['role:customer']);
 

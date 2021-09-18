@@ -6,6 +6,7 @@ use App\Models\Customer;
 use App\Models\CustomerGroup;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
@@ -16,7 +17,13 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        $customers = Customer::with('group')->paginate(20);
+        $user = Auth::user();
+        $customers = null;
+        if ($user->hasRole('administrator')) {
+            $customers = Customer::with('group')->paginate(20);
+        } else {
+            $customers = Customer::with('group')->where('created_id', $user->id)->paginate(20);
+        }
 
         return view('customers.index')->withCustomers($customers);
     }
@@ -61,7 +68,8 @@ class CustomerController extends Controller
             'address' => $request->address,
             'note' => $request->note,
             'group_id' => $request->group_id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
+            'created_id' => Auth::user()->id
         ]);
         return redirect()->route('customers.index');
     }
