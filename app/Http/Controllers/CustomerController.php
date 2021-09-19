@@ -144,11 +144,10 @@ class CustomerController extends Controller
     {
         $customer = Customer::findOrFail($id);
         $user = User::find($customer->user_id);
-       
+        $customer->delete();
         if ($user) {
             $user->delete();
         }
-        $customer->delete();
         return redirect()->route('customers.index');
     }
 }
