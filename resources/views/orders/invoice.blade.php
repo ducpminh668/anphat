@@ -153,8 +153,9 @@
 <script>
     function printData() {
         var divToPrint = document.getElementById("printBox");
-        newWin = window.open("");
-        newWin.document.write(` <!-- Global stylesheets -->
+        var newWin = window.open('');
+        newWin.document = ''
+        newWin.document.write(` <head><!-- Global stylesheets -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
     <link href="/admin/global_assets/css/icons/icomoon/styles.css" rel="stylesheet" type="text/css">
     <link href="/admin/css/bootstrap.min.css" rel="stylesheet" type="text/css">
@@ -162,10 +163,15 @@
     <link href="/admin/css/layout.min.css" rel="stylesheet" type="text/css">
     <link href="/admin/css/components.min.css" rel="stylesheet" type="text/css">
     <link href="/admin/css/colors.min.css" rel="stylesheet" type="text/css">
-    <!-- /global stylesheets -->`);
+    <!-- /global stylesheets --></head><body>`);
         newWin.document.write(divToPrint.outerHTML);
+        newWin.document.write('</body>');
         newWin.print();
-        newWin.close();
+        // newWin.close();
+    }
+
+    var is_chrome = function() {
+        return Boolean(window.chrome);
     }
 
     $('#btnPrint').on('click', function() {

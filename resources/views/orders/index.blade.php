@@ -53,6 +53,8 @@
                             <span class="badge badge-success">Đã thanh toán</span>
                             @elseif ( $item->status == 2)
                             <span class="badge badge-danger">Hủy đơn hàng</span>
+                            @elseif ( $item->status == 3)
+                            <span class="badge badge-primary">Thanh toán 1 phần</span>
                             @endif
                         </td>
                         <td class="text-center">
@@ -66,6 +68,7 @@
                                         
                                         <a href="/orders/{{$item->id}}/success" class="dropdown-item"><i class="icon-pencil"></i> Đã thanh toán</a>
                                         <a href="/orders/{{$item->id}}/cancel" class="dropdown-item"><i class="icon-diff-removed"></i> Hủy đơn hàng</a>
+                                        <a href="/orders/{{$item->id}}/partial" class="dropdown-item"><i class="icon-diff-removed"></i> Thanh toán 1 phần</a>
                                        
                                         <!-- <a href="/orders/{{$item->id}}/edit" class="dropdown-item"><i class="icon-move-left"></i> Trả lại hàng</a> -->
                                      
