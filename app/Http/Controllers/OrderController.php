@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderDetail;
+use App\Models\PhieuThu;
 use App\Models\Product;
 use App\Models\ReturnOrder;
 use App\Models\ReturnOrderDetail;
@@ -18,14 +19,14 @@ class OrderController extends Controller
     {
         $user = Auth::user();
         $orders = null;
-        if($user->hasRole('administrator')) {
+        if ($user->hasRole('administrator')) {
             $orders = Order::with('details')->orderByDesc('created_at')->paginate(10);
-        } else if($user->hasRole('sale')) {
+        } else if ($user->hasRole('sale')) {
             $orders = Order::with('details')->where('user_id', $user->id)->orderByDesc('created_at')->paginate(10);
-        } else if($user->hasRole('customer')) {
+        } else if ($user->hasRole('customer')) {
             $orders = Order::with('details')->where('phone', $user->phone)->paginate(10);
         }
-        
+
         return view('orders.index')->withOrders($orders);
     }
 
@@ -155,6 +156,35 @@ class OrderController extends Controller
         $order->update([
             'status' => 2,
         ]);
+        return redirect()->route('orders.index');
+    }
+
+    public function partial($id)
+    {
+        $order = Order::findOrFail($id);
+        $da_tt = PhieuThu::where('order_id', $id)->sum('so_tien');
+        return view('orders.partial')
+            ->withOrder($order)
+            ->withDaTT($da_tt);
+    }
+
+    public function postPartial(Request $request, $id)
+    {
+        $order = Order::findOrFail($id);
+        $da_tt = PhieuThu::where('order_id', $id)->sum('so_tien');
+        PhieuThu::create([
+            'order_id' => $id,
+            'so_tien' => $request->price
+        ]);
+        if ($order->total_due - $da_tt > $request->price) {
+            $order->update([
+                'status' => 3
+            ]);
+        } else if ($order->total_due - $da_tt <= $request->price) {
+            $order->update([
+                'status' => 1
+            ]);
+        }
         return redirect()->route('orders.index');
     }
 }

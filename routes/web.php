@@ -43,6 +43,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('orders', 'OrderController');
     Route::get('/orders/{id}/success', 'OrderController@success')->middleware(['role:administrator']);
     Route::get('/orders/{id}/cancel', 'OrderController@cancel')->middleware(['role:administrator']);
+    Route::get('/orders/{id}/partial', 'OrderController@partial')->middleware(['role:administrator']);
+    Route::post('/orders/{id}/partial', 'OrderController@postPartial')->middleware(['role:administrator']);
     Route::get('/invoice/{id}', 'OrderController@invoice');
 
     Route::get('/quantityReport', 'ReportController@quantityReport')->middleware(['role:administrator']);

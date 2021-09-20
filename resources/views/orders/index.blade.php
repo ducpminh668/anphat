@@ -63,15 +63,16 @@
                                     <a href="#" class="list-icons-item" data-toggle="dropdown" aria-expanded="false">
                                         <i class="icon-menu9"></i>
                                     </a>
-                                    @if($item->status == 0)
+                                    @if($item->status != 1)
                                     <div class="dropdown-menu dropdown-menu-right" x-placement="top-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(22px, 0px, 0px);">
-                                        
-                                        <a href="/orders/{{$item->id}}/success" class="dropdown-item"><i class="icon-pencil"></i> Đã thanh toán</a>
+                                        @if ($item->status == 3)
+                                        <a href="/orders/{{$item->id}}/partial" class="dropdown-item"><i class="icon-diff-removed"></i> Thanh toán </a>
+                                        @endif
+                                        @if ( $item->status == 0 )
+                                        <a href="/orders/{{$item->id}}/partial" class="dropdown-item"><i class="icon-diff-removed"></i> Thanh toán </a>
                                         <a href="/orders/{{$item->id}}/cancel" class="dropdown-item"><i class="icon-diff-removed"></i> Hủy đơn hàng</a>
-                                        <a href="/orders/{{$item->id}}/partial" class="dropdown-item"><i class="icon-diff-removed"></i> Thanh toán 1 phần</a>
-                                       
                                         <!-- <a href="/orders/{{$item->id}}/edit" class="dropdown-item"><i class="icon-move-left"></i> Trả lại hàng</a> -->
-                                     
+                                        @endif
                                     </div>
                                     @endif
                                 </div>
